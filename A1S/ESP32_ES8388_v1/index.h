@@ -115,7 +115,7 @@ const opisz=(o)=>{
   <div class="btns btns-bg blue">
     <button onClick='sn("radio?n=0")' class="btn">Info</button>
     <button onClick='sn("radio?start=0")' class="btn">Mute</button>
-    <button onClick='sn("radior?=0")' class="btn">Reset</button>
+    <button onClick='sn("radio?z=0")' class="btn">Reset</button>
   </div>
 
 </div>
