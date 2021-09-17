@@ -31,6 +31,7 @@ Zmienne globalne używają 52 400 bajtów (15%) pamięci dynamicznej, pozostawia
 #include "ES8388.h"  // https://github.com/maditnerd/es8388
 #include "Audio.h"   // https://github.com/schreibfaul1/ESP32-audioI2S
 #include "Stations.h"
+#include "index.h"
     #include "Credentials.h"
     /*
     file: libraries\Credentials\Credentials.h
@@ -116,7 +117,7 @@ void setup(){
     Serial.print(WiFi.RSSI());
     Serial.print(" IP: ");
     Serial.println(WiFi.localIP());
-    installServer();
+    
     Serial.printf("Connect to AC101 codec... ");
     while (not es.begin(IIC_DATA, IIC_CLK))
     {
@@ -138,9 +139,10 @@ void setup(){
 
     audio.setPinout(I2S_BCLK, I2S_LRCK, I2S_SDOUT);
 	  audio.i2s_mclk_pin_select(I2S_MCLK);
-    audio.setTone(6,-12,3);
+    audio.setTone(6,-8,6);
     audio.setVolume(cur_volume); // 0...21
     playCurStation();
+    installServer();
 }
 
 
@@ -272,11 +274,13 @@ void installServer(){
   
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     Serial.println("/");
-    request->send(SPIFFS, "/index.html", "text/html");
+    //request->send(SPIFFS, "/index.html", "text/html");
+    request->send(200, "text/html", PAGE_HTML);
   });
   server.on("/index.html", HTTP_GET, [](AsyncWebServerRequest *request){
     Serial.println("/index.html");
-    request->send(SPIFFS, "/index.html", "text/html");
+    //request->send(SPIFFS, "/index.html", "text/html");
+    request->send(200, "text/html", PAGE_HTML);
   });
   server.on("/box.web.json", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(SPIFFS, APPname, "application/manifest+json");
@@ -318,6 +322,8 @@ void installServer(){
                    
            if (ParamName=="v")  audio_ChangeVolume(ParamValue);       
            if (ParamName=="s")  audio_ChangeStation(ParamValue);       
+           if (ParamName=="z")  ESP.restart();       
+           
            
            
     }
