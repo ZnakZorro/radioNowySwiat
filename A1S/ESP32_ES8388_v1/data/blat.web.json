@@ -1,0 +1,22 @@
+{
+	"name": "BLAT radio",
+	"short_name": "BLAT",
+	"description": "radio BLAT",
+	"start_url": "index.html",
+	"display": "standalone",
+
+	"theme_color": "#6f006f",
+	"background_color": "#6f006f",
+	"icons": [
+	{
+		"src": "blat.webp",
+		"sizes": "512x512",
+		"type": "image/png"
+	}],
+	"screenshots": [
+	{
+		"src": "blat.webp",
+		"sizes": "512x512",
+		"type": "image/png"
+	}]
+}
