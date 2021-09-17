@@ -1,3 +1,12 @@
+/*
+Szkic używa 1 232 050 bajtów (93%) pamięci programu. Maksimum to 1310720 bajtów.
+Zmienne globalne używają 52 400 bajtów (15%) pamięci dynamicznej, pozostawiając 275280 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
+
+
+*/
+//Switch orig: 10100   //
+//Switch S1  : 01100   //1-OFF, 2-ON, 3-ON, 4-OFF, 5-OFF
+//sudo chmod a+rw /dev/ttyUSB0
 
 #define DEBUG 1
 
@@ -5,8 +14,8 @@
 #ifdef BLAT
   #define APPimage  "/blat.webp"
   #define APPname   "/blat.web.json"
-  #define VOLUMEdef 50
-  #define cur_volume_DEF  3
+  #define VOLUMEdef 95
+  #define cur_volume_DEF  6
 #endif
 
 
@@ -17,6 +26,7 @@
 #include "SPI.h"
 #include "SD.h"
 #include "FS.h"
+#include "SPIFFS.h"
 #include "Wire.h"
 #include "ES8388.h"  // https://github.com/maditnerd/es8388
 #include "Audio.h"   // https://github.com/schreibfaul1/ESP32-audioI2S
@@ -48,8 +58,8 @@
 #define GPIO_PA_EN    19
 
 int cur_station = 1;
-int cur_volume = 8;
-int volume = 80;                            // 0...100
+int cur_volume = cur_volume_DEF;
+int volume = VOLUMEdef;                            // 0...100
 char extraInfo[64];
 
 ES8388 es;
@@ -93,6 +103,7 @@ void setup(){
     SD.begin(SD_CS);
 
     WiFi.mode(WIFI_STA);
+    WiFi.mode(WIFI_OFF);
     WiFi.begin(ssid, password);
 
     Serial.println("WIFI...");
