@@ -2,6 +2,11 @@
 Szkic używa 1 232 050 bajtów (93%) pamięci programu. Maksimum to 1310720 bajtów.
 Zmienne globalne używają 52 400 bajtów (15%) pamięci dynamicznej, pozostawiając 275280 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
 
+Szkic używa 1 243 038 bajtów (94%) pamięci programu. Maksimum to 1310720 bajtów.
+Zmienne globalne używają 52 556 bajtów (16%) pamięci dynamicznej, pozostawiając 275124 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
+
+Szkic używa 1 242 138 bajtów (94%) pamięci programu. Maksimum to 1310720 bajtów.
+Zmienne globalne używają 52 556 bajtów (16%) pamięci dynamicznej, pozostawiając 275124 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
 
 */
 //Switch orig: 10100   //
@@ -14,8 +19,8 @@ Zmienne globalne używają 52 400 bajtów (15%) pamięci dynamicznej, pozostawia
 #ifdef BLAT
   #define APPimage  "/blat.webp"
   #define APPname   "/blat.web.json"
-  #define VOLUMEdef 95
-  #define cur_volume_DEF  6
+  #define VOLUMEdef 70
+  #define cur_volume_DEF  4
 #endif
 
 
@@ -32,9 +37,9 @@ Zmienne globalne używają 52 400 bajtów (15%) pamięci dynamicznej, pozostawia
 #include "Audio.h"   // https://github.com/schreibfaul1/ESP32-audioI2S
 #include "Stations.h"
 #include "index.h"
-    #include "Credentials.h"
+    #include "credentials.h"
     /*
-    file: libraries\Credentials\Credentials.h
+    file: ~\Arduino\libraries\Credentials\Credentials.h
         char ssid[] =     "******";
         char password[] = "******";
     */
@@ -77,6 +82,8 @@ AsyncWebServer server(80);
 //#define pinE    //18
 #define pin5    5
 
+int ADC=0;
+int lastADC=0;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -126,28 +133,50 @@ void setup(){
     }
     Serial.printf("OK\n");
     
+
+    // Enable amplifier
+    pinMode(GPIO_PA_EN, OUTPUT);
+    digitalWrite(GPIO_PA_EN, HIGH);
+    es.mute(ES8388::ES_OUT1, true);
+    es.mute(ES8388::ES_OUT2, true);
+    es.mute(ES8388::ES_MAIN, true);
+
+    audio.setPinout(I2S_BCLK, I2S_LRCK, I2S_SDOUT);
+	  audio.i2s_mclk_pin_select(I2S_MCLK);
+    audio.setTone(6,-6,4,450,1250,3500,30);
+    audio.setVolume(0); 
+    playCurStation();
+    installServer();
+    
     es.volume(ES8388::ES_MAIN, volume);
     es.volume(ES8388::ES_OUT1, volume);
     es.volume(ES8388::ES_OUT2, volume);
     es.mute(ES8388::ES_OUT1, false);
     es.mute(ES8388::ES_OUT2, false);
     es.mute(ES8388::ES_MAIN, false);
-
-    // Enable amplifier
-    pinMode(GPIO_PA_EN, OUTPUT);
-    digitalWrite(GPIO_PA_EN, HIGH);
-
-    audio.setPinout(I2S_BCLK, I2S_LRCK, I2S_SDOUT);
-	  audio.i2s_mclk_pin_select(I2S_MCLK);
-    audio.setTone(6,-8,6);
     audio.setVolume(cur_volume); // 0...21
-    playCurStation();
-    installServer();
+    
 }
 
+/*
+BUTTON    GPIO
+* TP_VOL  17  n
+* TP_SET   9  n
+* TP_PLAY  8  n  
+* BUT_REC  0  
+* BUT_MODE 3  n
+*/
+
+#define ADCpin    3
 
 void loop(){
     audio.loop();
+    
+          ADC = analogRead(ADCpin);
+          if (ADC!=lastADC){
+              onScreens(String(ADC).c_str(),ADCpin);
+              lastADC = ADC;
+          }
     
                                 //----------------------------------------------------------------------------------------------------------------------
                                 if (Serial.available() > 0) {
@@ -266,6 +295,10 @@ void audio_ChangeStation(String ParamValue){
     if (ParamValue=="m") cur_station--;
     playCurStation();
 }
+void audio_SetStationNr(String ParamValue){
+    cur_station = ParamValue.toInt();
+    playCurStation();
+}
 
 
 
@@ -282,7 +315,7 @@ void installServer(){
     //request->send(SPIFFS, "/index.html", "text/html");
     request->send(200, "text/html", PAGE_HTML);
   });
-  server.on("/box.web.json", HTTP_GET, [](AsyncWebServerRequest *request){
+  /*server.on("/box.web.json", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(SPIFFS, APPname, "application/manifest+json");
   });
   server.on("/box.webp", HTTP_GET, [](AsyncWebServerRequest *request){
@@ -294,7 +327,7 @@ void installServer(){
   server.on("/radio.json", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(SPIFFS, "/radio.json", "application/json");
   });
-  /*server.on("/stations.txt", HTTP_GET, [](AsyncWebServerRequest *request){
+  server.on("/stations.txt", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(200, "text/plain",getStations());
   });*/
   server.on("/box.js", HTTP_GET, [](AsyncWebServerRequest *request){
@@ -303,7 +336,7 @@ void installServer(){
   
   // AJAXY
   server.on("/radio", HTTP_GET, [](AsyncWebServerRequest *request){
-    Serial.println("/radio");
+    //Serial.println("/radio");
     //ledled();
     //last_get_url = "";
     /******************************/
@@ -311,25 +344,22 @@ void installServer(){
      int params = request->params();
      for(int i=0;i<params;i++){
           AsyncWebParameter* p = request->getParam(i); 
-          Serial.print("get=");Serial.print(p->name().c_str()); Serial.print("="); Serial.println(p->value().c_str());
+          //Serial.print("get=");Serial.print(p->name().c_str()); Serial.print("="); Serial.println(p->value().c_str());
           
           String ParamName  = String(p->name());
           String ParamValue = p->value();
+          onScreens((ParamName+"="+ParamValue).c_str(),326);
                      
-           if (ParamName=="start") {audio.pauseResume();}
-           
-           if (ParamName=="r") {playCurStation(); }
-                   
-           if (ParamName=="v")  audio_ChangeVolume(ParamValue);       
-           if (ParamName=="s")  audio_ChangeStation(ParamValue);       
-           if (ParamName=="z")  ESP.restart();       
-           
-           
-           
+           if (ParamName=="start") audio.pauseResume();
+           if (ParamName=="r") playCurStation();
+           if (ParamName=="v") audio_ChangeVolume(ParamValue);
+           if (ParamName=="s") audio_ChangeStation(ParamValue);
+           if (ParamName=="t") audio_SetStationNr(ParamValue); 
+           if (ParamName=="z") ESP.restart();    
     }
  
     request->send(200, "text/plain",getRadioInfo());
-  });
+  });   // EOF /radio
  
   server.on("/start", HTTP_GET, [](AsyncWebServerRequest *request){
       bool gramy = audio.pauseResume();
@@ -340,7 +370,6 @@ void installServer(){
     request->send(200, "text/plain",  getRadioInfo());
   });
  
-
   DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
   server.begin();
   
