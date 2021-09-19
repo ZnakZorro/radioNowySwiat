@@ -4,22 +4,25 @@ const char PAGE_HTML[] PROGMEM = R"=====(
 <head>
 <meta charset="utf-8">
 <title>@radio RNS</title>
+<link rel="manifest" href="teren.web.json"> 
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0F2C4B">
+<link rel="shortcut icon" type="image/svg+xml" size="any" href="radio.svg"> 
+<link rel="icon" type="image/svg+xml" href="radio.svg">  
 <style>
   /*#4B110F#8D9176#0F2C4B#E7E3C1#D67E2B*/
-html {font:normal 14pt verdana}
+*,html {font:normal 14pt verdana; color:#E7E3C1; }
 body {background-color: #0F2C4B; padding: 0.25em; color:white;}
-.col {max-width: 600px;margin: auto; text-align:center;}
+.col {max-width: 630px;margin: auto; text-align:center;}
 h3 {margin:0.3em 0;}
-#info,#czas {font-size:0.85em;font-family: monospace;}
-#info {min-height: 4.5em;}
+#info,#czas {font-size:0.8rem;font-family: monospace;}
+#info {min-height: 5em;}
 .btn {
   background-color: #28396f;
   border-color: #000;
   color: white;
-  padding: 0.5em 0.25em;
+  padding: 0.65em 0.15em;
   box-shadow: inset 0px 0px 1px 1px #16162f;
   border-radius: 0.75em;
   text-align: center;
@@ -27,20 +30,21 @@ h3 {margin:0.3em 0;}
 .btn:active, .btn:visited, .active {
   background-color: #2c395f!important;
   border-color: #6079c7;
-  box-shadow: inset 0px 0px 2px 2px #4b4ba7;
+  box-shadow: inset 0px 0px 1px 1px #4b4ba7;
 }
 .btns {
   max-width: 1024px;
-  margin: 0.5em auto ;
+  margin: 0.25em auto ;
   display: grid;
-  grid-gap: 0.5em;
+  grid-gap: 0.25em;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
 }
 .btns-sm,.btn-sm {grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));}
-.btns-bg {grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));margin-top:1em;}
+.btns-bg {grid-template-columns: repeat(auto-fit, minmax(74px, 1fr));margin-top:1em;}
 
-.btns.red button{background-color:#4B110F;}
-
+.btns.red button {background-color:#4B110F;}
+.btns-sm button {font-size:0.88rem;}
+.ex{background: #8D9176;}
 div#app span {
   width: 3em;
   height: 1.3em;
@@ -52,7 +56,9 @@ div#app span {
   border-radius: 0.5em;
 }
 span.sp5 {padding:1em; display: grid;grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));border: 1px solid black; box-shadow: inset 0px 0px 2px 2px black;}
-</style>
+img, svg {display: grid;align-content: center;justify-content: space-around;max-width: 10em;margin: auto;}
+  
+  </style>
 <script>
 const _$=e=>document.querySelector(e);
 const _$$=e=>document.querySelectorAll(e);
@@ -76,7 +82,6 @@ fetch(url+p)
 
 const btnActive=(lSTA)=>{
   _$$("div.st button").forEach((b)=>{if (b) b.classList.remove("active")});
-  console.log(_$("#st"+lSTA));
   if(lSTA>=0 && _$("#st"+lSTA)) _$("#st"+lSTA).classList.add("active");
 }
 const opisz=(o)=>{
@@ -111,35 +116,36 @@ const opisz=(o)=>{
       <button class="btn" onClick='sn("radio?s=p")'>Sta+</button>
     </div>   
   </div>
-  <div class="btns btns-bg btns-sm blue">
-    <button onClick='sn("radio?n=0")' class="btn">Info</button>
-    <button onClick='sn("radio?start=0")' class="btn">Mute</button>
-    <button onClick='sn("radio?z=0")' class="btn">Reset</button>
-  </div>
   <div class="btns btns-bg btns-sm red st">
     <button onClick='sn("radio?t=0")' class="btn" id="st0">TOK-FM</button>
     <button onClick='sn("radio?t=1")' class="btn" id="st1">RNŚ</button>
     <button onClick='sn("radio?t=2")' class="btn" id="st2">357</button>
-    <button onClick='sn("radio?t=3")' class="btn" id="st3">S-Jazz</button>
-    <button onClick='sn("radio?t=4")' class="btn" id="st4">S-Class</button>
-    <button onClick='sn("radio?t=5")' class="btn" id="st5">RMF-Cl</button>
+    <button onClick='sn("radio?t=3")' class="btn" id="st3">Sw-Jzz</button>
+    <button onClick='sn("radio?t=4")' class="btn" id="st4">Sw-Cla</button>
+    <button onClick='sn("radio?t=5")' class="btn" id="st5">Sw-Pop</button>
+    <button onClick='sn("radio?t=6")' class="btn" id="st5">Cl-FM</button>
+    <button onClick='sn("radio?t=7")' class="btn" id="st5">101-J</button>
 
   </div>
-
+  <div class="btns btns-bg btns-sm blue">
+    <button onClick='sn("radio?n=0")' class="btn ex">Info</button>
+    <button onClick='sn("radio?start=0")' class="btn ex">Mute</button>
+    <button onClick='sn("radio?z=0")' class="btn ex">Reset</button>
+  </div>
 </div>
   
-<br /><br /><br /> 
+<hr /> 
 <!--#4B110F#8D9176#0F2C4B#E7E3C1#D67E2B-->
   <div class="col btns">
-    <span class="sp5" style="background:#4B110F">#4B110F</span>
-    <span class="sp5" style="background:#8D9176">#8D9176</span>
-    <span class="sp5" style="background:#0F2C4B">#0F2C4B</span>
-    <span class="sp5" style="background:#E7E3C1">#E7E3C1</span>
-    
-  </div>
+    <button onClick='sn("radio?q=0")' class="btn sp5" style="background:#0F2C4B">eq(6,-6,6)</button>
+    <button onClick='sn("radio?q=1")' class="btn sp5" style="background:#4B110F">eq(6,-12,6)</button>
+    <button onClick='sn("radio?q=2")' class="btn sp5" style="background:#8D9176">eq(6,-18,6)</button>
+    <button onClick='sn("radio?q=3")' class="btn sp5" style="background:#E7E3C1;color:#0F2C4B">eg(0,0,0)</button>
+  </div>  
+  
+<img src="radio.svg" />  
 </body>
 </html>
-
 
 
 )=====";

@@ -1,12 +1,4 @@
 /*
-Szkic używa 1 232 050 bajtów (93%) pamięci programu. Maksimum to 1310720 bajtów.
-Zmienne globalne używają 52 400 bajtów (15%) pamięci dynamicznej, pozostawiając 275280 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
-
-Szkic używa 1 243 038 bajtów (94%) pamięci programu. Maksimum to 1310720 bajtów.
-Zmienne globalne używają 52 556 bajtów (16%) pamięci dynamicznej, pozostawiając 275124 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
-
-Szkic używa 1 242 138 bajtów (94%) pamięci programu. Maksimum to 1310720 bajtów.
-Zmienne globalne używają 52 556 bajtów (16%) pamięci dynamicznej, pozostawiając 275124 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
 
 */
 //Switch orig: 10100   //
@@ -20,7 +12,7 @@ Zmienne globalne używają 52 556 bajtów (16%) pamięci dynamicznej, pozostawia
   #define APPimage  "/blat.webp"
   #define APPname   "/blat.web.json"
   #define VOLUMEdef 70
-  #define cur_volume_DEF  4
+  #define cur_volume_DEF  5
 #endif
 
 
@@ -37,6 +29,7 @@ Zmienne globalne używają 52 556 bajtów (16%) pamięci dynamicznej, pozostawia
 #include "Audio.h"   // https://github.com/schreibfaul1/ESP32-audioI2S
 #include "Stations.h"
 #include "index.h"
+#include "web.h"
     #include "credentials.h"
     /*
     file: ~\Arduino\libraries\Credentials\Credentials.h
@@ -143,7 +136,7 @@ void setup(){
 
     audio.setPinout(I2S_BCLK, I2S_LRCK, I2S_SDOUT);
 	  audio.i2s_mclk_pin_select(I2S_MCLK);
-    audio.setTone(6,-6,4,450,1250,3500,30);
+    audio.setTone(6,-15,6,500,1500,4500,30);
     audio.setVolume(0); 
     playCurStation();
     installServer();
@@ -300,7 +293,14 @@ void audio_SetStationNr(String ParamValue){
     playCurStation();
 }
 
-
+void audio_SetEQNr(String ParamValue){
+    int q = ParamValue.toInt();
+    onScreens(String(q).c_str(),305);
+    if (q==0) audio.setTone(6, -6,6,550,1550,4500,30);
+    if (q==1) audio.setTone(6,-12,6,550,1550,4500,30);
+    if (q==2) audio.setTone(3,-18,6,550,1550,4500,30);
+    if (q==3) audio.setTone(0,  0,0,550,1550,4500,30);
+}
 
 void installServer(){
   onScreens("installServer",616);
@@ -315,6 +315,13 @@ void installServer(){
     //request->send(SPIFFS, "/index.html", "text/html");
     request->send(200, "text/html", PAGE_HTML);
   });
+  server.on("/teren.web.json", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(200, "application/json", TEREN_WEB_JSON);
+  });
+  server.on("/radio.svg", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(200, "image/svg+xml", RADIO_SVG);
+  });
+    
   /*server.on("/box.web.json", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(SPIFFS, APPname, "application/manifest+json");
   });
@@ -354,7 +361,8 @@ void installServer(){
            if (ParamName=="r") playCurStation();
            if (ParamName=="v") audio_ChangeVolume(ParamValue);
            if (ParamName=="s") audio_ChangeStation(ParamValue);
-           if (ParamName=="t") audio_SetStationNr(ParamValue); 
+           if (ParamName=="t") audio_SetStationNr(ParamValue);
+           if (ParamName=="q") audio_SetEQNr(ParamValue); 
            if (ParamName=="z") ESP.restart();    
     }
  
