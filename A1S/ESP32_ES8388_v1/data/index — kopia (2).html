@@ -7,26 +7,30 @@
 <link rel="manifest" href="teren.web.json"> 
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#4564a4">
+<meta name="theme-color" content="#0F2C4B">
 <link rel="shortcut icon" type="image/svg+xml" size="any" href="radio.svg"> 
 <link rel="icon" type="image/svg+xml" href="radio.svg">  
 <style>
   /*#4B110F#8D9176#0F2C4B#E7E3C1#D67E2B*/
-*,html {font:normal 14pt verdana; color:#222; }
-body {background-color: #fafafa; padding: 0.25em; color:white;}
+*,html {font:normal 14pt verdana; color:#E7E3C1; }
+body {background-color: #0F2C4B; padding: 0.25em; color:white;}
 .col {max-width: 630px;margin: auto; text-align:center;}
 h3 {margin:0.3em 0;}
-button{border:none;}
 #info,#czas {font-size:0.8rem;font-family: monospace;}
 #info {min-height: 5em;}
 .btn {
-  background-color: #f5be47;
+  background-color: #28396f;
+  border-color: #000;
+  color: white;
   padding: 0.65em 0.15em;
+  box-shadow: inset 0px 0px 1px 1px #16162f;
   border-radius: 0.75em;
   text-align: center;
 }
 .btn:active, .btn:visited, .active {
-  background-color: #4564a4!important;
+  background-color: #2c395f!important;
+  border-color: #6079c7;
+  box-shadow: inset 0px 0px 1px 1px #4b4ba7;
 }
 .btns {
   margin: 0.25em auto ;
@@ -37,10 +41,10 @@ button{border:none;}
 .btns-sm,.btn-sm, .sp {grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));}
 .btns-bg {grid-template-columns: repeat(auto-fit, minmax(74px, 1fr));margin-top:1em;}
 
-.btns.red button {background-color:#df513b;color:white}
+.btns.red button {background-color:#4B110F;}
 .btns-sm button {font-size:0.88rem;}
 .sp button {background: #E7E3C1;color: #0F2C4B; font-size: 0.8rem;}
-.ex{background: #19d191;color:white}
+.ex{background: #8D9176;}
 div#app span {
   width: 3em;
   height: 1.3em;
@@ -152,15 +156,15 @@ const opisz=(o)=>{
 let kolory=[
 "#fafafa",
 "#f5be47",
-//"#f3b163",
-//"#fe7b45",
+"#f3b163",
+"#fe7b45",
 "#df513b",
-//"#ff7282",
-//"#fe6c81",
+"#ff7282",
+"#fe6c81",
 "#19d191",
-//"#14d18f",
-//"#17ca86",
-//"#47dfea",
+"#14d18f",
+"#17ca86",
+"#47dfea",
 "#4ecddc",
 "#4564a4",
 ];

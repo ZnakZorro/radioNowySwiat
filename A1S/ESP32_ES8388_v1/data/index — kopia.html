@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="HandheldFriendly" content="true">
+<link rel="shortcut icon" type="image/webp" size="512x512" href="./box.webp">
+<link rel="manifest" href="./box.web.json">
+<meta name="mobile-web-app-capable" content="yes"> 
+<meta name="theme-color" content="#222">	
+<title>BOX radio</title>
+<style>
+.hide {display:none;}
+div {margin-bottom:0.5em;}
+html {font-size:12.5pt; font-family:Verdana;display:inline-block;margin:0;text-align:center;}
+body {background:#333;color:#fff;width:100%;max-width:43em;margin:auto;}
+button {display:inline-block;background-color:#158;border:none;border-radius:0.5em;color:white;padding:0.4em;text-decoration:none;font-size:1em;margin:0.25em 0;cursor:pointer; min-width:6em;}
+button span {
+    font-size: 0.7em;
+    display: block;
+    line-height: 0.9em;
+}
+:focus {outline:none;border:none;}
+.red {background:#c00;}
+.av {background:#444;}
+.activ {background:#aaa;}
+.active,.gold{outline:none;border:none;background:#A82!important; color:black;}
+.active{background:#ee0;}
+.btn1 {min-width:auto; width:2.25em; max-width:15%;}
+.btn2 {min-width:auto; width:3.25em; max-width:20%;}
+.btn3 {min-width:auto; width:4.25em; max-width:20%;background: #1b87d8;}
+.btn4 {min-width:auto; width:4.25em; max-width:25%; }
+.btn0 {min-width:auto; width:1.75em;}
+.b20 {background:#047;}
+.st {display:block;opacity:0.8;margin:auto;}
+.bg {min-width:6.4em; margin:0.5em 0.2em;font-size:1.1em;}
+small {font-size:0.6em;}
+div#app span {width:2em;height:1.3em;background:white;color:navy;text-align:center;padding:0.3em;margin:0.6em 0 0 0;border-radius:0.5em;display:inline-block;vertical-align:top;}
+div#info {cursor:pointer;height:6em;overflow: hidden;}
+input    {width:93%; font-size:1em;margin:0.5em 0;}
+textarea {width:93%; font-size:0.65rem; min-height:20em;}
+table#local {background:#000; margin:0.7em auto;border-radius: 0.5em; font-size:0.9em;width: 100%;}
+table#local td { padding:0.1em 0.3em;border-radius: 0.5em;}
+table#local td:nth-child(1) {}
+table#local td:nth-child(2) {font-size:0.8em;background:#444;word-break: break-all;}
+input[type="number" i] {width:2.5em;}
+.dis {opacity:0.3;}
+#testy button {background:#666; font-size:0.88em;}
+#testy button:focus {background:#a00;}
+#sliders input, #sliders span {display:inline-block;}
+#sliders div {border-bottom:3px solid #444;}
+#sliders div input.field {width:4em;}
+#sliders span.name {width:4em;}
+#sliders div input.slider {width: calc(100% - 11em);}
+div.card {paddinng:0.3em; margin:0.3em auto; backkground:#ddd;}
+@media (max-width: 800px) {
+	#sliders div input.slider {width: 96%; margin-bottom:1em;}
+
+}
+
+input[type=range][orient=vertical]{
+	writing-mode: bt-lr; /* IE */
+	-webkit-appearance: slider-vertical; /* WebKit */
+	width:28%;
+	max-width:12em;	
+}
+input[type=range]::-webkit-slider-runnable-track {
+	background: #e8e8e8;
+}
+input[type=range].q::-webkit-slider-runnable-track {
+	background: #008;
+}
+input[type=range].g {
+	display:inline;
+	width:30%;
+}
+input[type=range].g::-webkit-slider-runnable-track {
+	background: gold;
+}
+input[type=range].g.r::-webkit-slider-runnable-track {
+	background: #f00;
+}
+
+
+div#wyniki div{display:inline;background:#222; min-width:5em;}
+	
+div#wyniki0 {
+    float: left;
+    margin-left: 3%;
+}
+div#wyniki1 {
+    
+}
+div#wyniki2 {
+    float: right;
+    margin-right: 3%;
+}
+@media (min-width: 800px) {
+	div#wyniki0 {margin-left:  15%;}
+	div#wyniki2 {margin-right: 15%;}
+}	
+
+#wykres {
+    background: transparent;
+    width: fit-content;
+    padding: 0;
+    margin: auto;
+}
+svg path {
+  fill: none;
+  stroke: #fff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: 0.5s;
+	stroke-width:5;
+}	
+svg.a {
+    width: 600px;
+	max-width:100%;
+    height: 200px;
+    background: #000;
+	margin: 0 -3px;
+    
+}
+input#pas,input#sid {display:inline; width:7em;}
+	
+	
+	/*transform: translate(-50%, 0%);*/
+	div#wyniki {display: inline-block;}
+	div#eq {position:relative;}
+	div#wykres {position:relative;}
+	#gainl ,#gainm, #gainh {position:absolute; top:110px; width:20px;}
+	#gainl{left:15%;}
+	#gainm{left:48%;}
+	#gainh{right:15%;}
+	#frql ,#frqm, #frqh {position:absolute; top:60px; width:28%;}
+	#frql{left:5%;}
+	#frqm{left:36%;}
+	#frqh{right:5%;}
+	#sq {}	
+	
+	
+	
+</style>	
+	
+
+<script>
+const _$=e=>document.querySelector(e);
+const _$$=e=>document.querySelectorAll(e);
+console.log(location);
+let url = "/";
+let color="#222";
+if (location.protocol==="file:") {url = "http://192.168.31.215/"; color="#800"}
+if (location.search){
+	url = location.search.split("=")[1];
+}
+const urlARR = window.location.search.split("=");
+if (urlARR[1]) url = urlARR[1];
+console.log("url=",url);
+
+let lastSTA = 0;
+let locale = {};
+
+const tt=()=>{
+	//setTimeout(function(){sn()},2000);
+	//setTimeout(function(){sn()},6000);
+}
+
+const btnActive=(lSTA)=>{
+	_$$("div.st button").forEach((b)=>{if (b) b.classList.remove("active")});
+	if(lSTA>=0 && _$("#st"+lSTA)) _$("#st"+lSTA).classList.add("active");
+}
+//98,69,76
+const opisz=(o)=>{
+	let a = o.split("!");
+	//console.log(a);
+	lastSTA = parseInt(a[0]);
+	btnActive(lastSTA);
+	_$("#sta").textContent = lastSTA+1;
+	_$("#vol").textContent = a[1];
+	_$("#info").innerHTML  = "wifi:"+a[2]+"dB";
+	if(a[3]) _$("#info").innerHTML += "<br />"+a[3];
+	if(a[4]) _$("#info").innerHTML += "<br />"+a[4];
+	if(a[5]) _$("#info").innerHTML += "<br />"+a[5];
+	if(a[6]) _$("#info").innerHTML += "<br />"+a[6];
+	if(a[7]) _$("#info").innerHTML += " "+a[7];
+}
+const relo=(e)=>{
+	console.log(e);
+	//setTimeout(function(){location.reload();},5000);
+}
+const st=(s)=>{
+	clearTimeout(timeLoop);
+	let czyTak = true;
+	if (parseInt(s)<0) {czyTak = confirm("Potwierdź!")}
+	console.log(czyTak)
+	if (czyTak)fetch(url+"radio?s="+s).then(r => {return r.text()}).then(o => {tt();console.log(o)}).catch(e => {relo(e);})
+}
+const sn=(n="n",s="0")=>{
+	clearTimeout(timeLoop);
+	fetch(url+"radio?"+n+"="+s).then(r => {return r.text()}).then(o => {
+		if(n!="n") tt();
+		opisz(o);		
+	}).catch(e => {relo(e);})
+}
+
+const su=(e,p=1)=>{
+	clearTimeout(timeLoop);
+	_$("#stream").value = e.dataset.url;	//textContent;
+	stream(e.textContent,e,p);
+	//if (p) window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+let timeLoop=null;
+	
+const stream=(name=null,el,p=1)=>{
+	name = name || _$("#name").value;
+	console.log(name)
+	if (!name) return;
+	let sval = _$("#stream").value;
+	if(sval.length<5){return;}
+	fetch(url+"radio?u="+sval+"&n="+name)
+	.then(r => {return r.text()})
+	.then(o => {
+		opisz(o);
+		tt();
+	})
+	.catch(e => {relo(e);});
+	
+	if (p) {
+		let parent = _$('#radio');
+		go2Locale(name,sval);
+		if (el!=null) {
+			//console.log(el);
+			//local.prepend(el);
+			//parent.prepend(el);
+		}
+	}
+	if (parseInt(p) > 10){
+		console.log("loop=",p,"sek");
+		timeLoop = setTimeout(()=>(stream(name,el,p)),p*1000);
+	}
+}
+
+
+
+//domready
+document.addEventListener("DOMContentLoaded",function(){
+
+	document.body.style.background=color;
+	setInterval(()=>sn,45000);
+	sn();
+
+	_$$("#pre button").forEach((b)=>{
+		b.classList.add("av");
+		b.classList.remove("active");
+		b.addEventListener('click',predef);
+		b.querySelector("span").addEventListener('click',predef);
+	});
+	//wstawStacje();
+	//wstawTesty___();
+	// ustal kkolory
+	fetch("box.web.json")
+		.then(r => {return r.json()})
+		.then(o => {
+			console.log(o);
+			console.log(o.theme_color);
+			document.title = o.name;
+			document.body.style.background = o.theme_color;
+			document.querySelector('meta[name="theme-color"]').content = o.theme_color;	
+		}).catch(e => {relo(e);});
+	// WS
+	    //initWebSocket();
+})
+</script>
+</head>
+<body>
+    <div id="app">
+		<div id="info" onClick='sn("n")'>Radio Nowy Świat</div>
+		<button class="btn4"     onClick='sn("n")'>Info</button>		
+		<button class="btn4"     onClick='sn("start")'>Mute</button>
+		<button class="btn4"     onClick='sn("r")'>Replay</button>
+		<button class="btn4"     onClick='location.reload()'>Reload</button>
+		
+		<br />
+		<button class="bg"     onClick='sn("v","m")'>Vol --</button>
+		<span id="vol"></span>
+		<button class="bg red" onClick='sn("v","p")'>VOL ++</button>
+		<br />
+		<button class="bg"     onClick='sn("s","m")'>Sta --</button>
+		<span id="sta"></span>
+		<button class="bg gold" onClick='sn("s","p")'>STA ++</button>
+		<br />
+	</div>
+  <div>
+		
+		<input  placeholder="stream" type="text" id="stream" />
+		<div style="margin:auto;width:94%">
+				<input  placeholder="name" style="max-width:9em; float:left;" type="text" id="name" />
+				<button style="float:right;" class="red" onclick="stream()">Włącz</button>
+		</div>
+		<table id="local"></table>
+	</div>
+	
+	
+
+<script src="./box.js"></script>
+</body>
+</html>
+
