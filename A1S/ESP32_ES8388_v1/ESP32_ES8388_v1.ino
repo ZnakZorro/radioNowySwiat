@@ -13,7 +13,6 @@
   #define cur_volume_DEF  10
 #endif
 
-
 #include "Arduino.h"
     #include "DNSServer.h"
     #include "ESPAsyncWebServer.h"    //https://github.com/me-no-dev/ESPAsyncWebServer
@@ -29,11 +28,7 @@
 #include "index.h"
 #include "web.h"
     #include "credentials.h"
-    /*
-    file: ~\Arduino\libraries\Credentials\Credentials.h
-        char ssid[] =     "******";
-        char password[] = "******";
-    */
+
 #define SD_CS         21
 
 // GPIOs for SPI
@@ -95,37 +90,27 @@ void setup(){
     Serial.begin(115200);
     onScreens(String(cur_station).c_str(),0);
     onScreens("Restart...",0);
-    onScreens(WIFIplace,0);
-    //Serial.println("\r\nReset");
-    //Serial.println(WIFIplace);
-    //Serial.printf_P(PSTR("Free mem=%d\n"), ESP.getFreeHeap());
-    //onScreens("Free mem="+((ESP.getFreeHeap())).c_str(),0);
     onScreens(("Free mem="+String(ESP.getFreeHeap())).c_str(),0);
     SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI);
     SPI.setFrequency(1000000);
-
     SD.begin(SD_CS);
-
     WiFi.mode(WIFI_STA);
     WiFi.mode(WIFI_OFF);
-    WiFi.begin(ssid, password);
-
-    
+    WiFi.begin(ssid, password);    
     onScreens("WIFI...",0);
     while(WiFi.status() != WL_CONNECTED) {
         Serial.print(".");
         delay(500);
     }
-    onScreens(("Connected\r\nIP: "+String(WiFi.localIP())).c_str(),111);
+    onScreens(("Connected\r\nIP: "+String(WiFi.localIP())).c_str(),105);
     Serial.println(WiFi.localIP());
-    onScreens(("RSSI: "+String(WiFi.RSSI())).c_str(),111);
-  
-    onScreens("Connect to AC101 codec... ",111);
+    onScreens(("RSSI: "+String(WiFi.RSSI())).c_str(),107);
+    onScreens("Connect to AC101 codec... ",108);
     while (not es.begin(IIC_DATA, IIC_CLK)){
-        onScreens("Failed!!!\n ",111);
+        onScreens("Failed!!!\n ",110);
         delay(1000);
     }
-    onScreens("OK",111);
+    onScreens("OK",113);
     
     // Enable amplifier
     pinMode(GPIO_PA_EN, OUTPUT);
@@ -204,14 +189,13 @@ void loop(){
 
 
 void audio_showstation(const char *info){
-    onScreens("GPIO_PA_EN=HIGH",207);
+    onScreens("GPIO_PA_EN=HIGH",192);
     digitalWrite(GPIO_PA_EN, HIGH);
     es.mute(ES8388::ES_OUT1, !true);
     es.mute(ES8388::ES_OUT2, !true);
     es.mute(ES8388::ES_MAIN, !true);
     
-    onScreens(("Station::     "+String(info)).c_str(),209);
-    //Serial.print("station     ");Serial.println(info);
+    onScreens(("Station::     "+String(info)).c_str(),198);
     snprintf(extraInfo, 64, info);
 }
 void audio_lasthost(const char *info){  //stream URL played
@@ -274,7 +258,7 @@ void setCurVolume(){
     if (cur_volume < 0)  cur_volume = 0;
     if (cur_volume > 20) cur_volume = 21;
     audio.setVolume(cur_volume); // 0...21
-    onScreens(String(cur_volume).c_str(),227);
+    onScreens(String(cur_volume).c_str(),261);
 }
 
 void audio_ChangeVolume(String ParamValue){
@@ -286,7 +270,7 @@ void audio_ChangeVolume(String ParamValue){
 void playCurStation(){
     if (cur_station <  0)            cur_station = last_stations;
     if (cur_station > last_stations)  cur_station = 0;    
-    onScreens(String(cur_station).c_str(),282);
+    onScreens(String(cur_station).c_str(),273);
     //audio.stopSong();
     //audio.setVolume(0);
     digitalWrite(GPIO_PA_EN, LOW);
@@ -294,18 +278,8 @@ void playCurStation(){
     es.mute(ES8388::ES_OUT2, true);
     es.mute(ES8388::ES_MAIN, true);
     
-    onScreens("GPIO_PA_EN=LOW",289);
-    //es.mute(ES8388::ES_OUT1, true);
-    //es.mute(ES8388::ES_OUT2, true);
-    //es.mute(ES8388::ES_MAIN, true);     
+    onScreens("GPIO_PA_EN=LOW",281);
       audio.connecttohost(stacje[cur_station].stream);
-    //es.mute(ES8388::ES_OUT1, false);
-    //es.mute(ES8388::ES_OUT2, false);
-    //es.mute(ES8388::ES_MAIN, false);     
-    //audio.setVolume(cur_volume > 2);
-    //audio.setVolume(cur_volume > 1);
-    //digitalWrite(GPIO_PA_EN, HIGH);
-    //audio.setVolume(cur_volume);
 }
 void audio_ChangeStation(String ParamValue){
     if (ParamValue=="p") cur_station++;
@@ -319,18 +293,13 @@ void audio_SetStationNr(String ParamValue){
 
 void audio_SetEQNr(String ParamValue){
     int q = ParamValue.toInt();
-    onScreens(String(q).c_str(),305);    
+    onScreens(String(q).c_str(),296);    
     audio.setTone(qqq[q].l, qqq[q].m, qqq[q].h);
-    /*
-    if (q==0) audio.setTone(6, -6,6,550,1550,4500,30);
-    if (q==1) audio.setTone(6,-12,6,550,1550,4500,30);
-    if (q==2) audio.setTone(3,-18,6,550,1550,4500,30);
-    if (q==3) audio.setTone(0,  0,0,550,1550,4500,30);
-    */
+
 }
 
 void installServer(){
-  onScreens("installServer",616);
+  onScreens("installServer",202);
   
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
     Serial.println("/");
@@ -383,7 +352,7 @@ void installServer(){
           
           String ParamName  = String(p->name());
           String ParamValue = p->value();
-          onScreens((ParamName+"="+ParamValue).c_str(),326);
+          onScreens((ParamName+"="+ParamValue).c_str(),355);
                      
            if (ParamName=="start") audio.pauseResume();
            if (ParamName=="r") playCurStation();
@@ -400,7 +369,7 @@ void installServer(){
   server.on("/start", HTTP_GET, [](AsyncWebServerRequest *request){
       bool gramy = audio.pauseResume();
       #ifdef DEBUG
-          onScreens((String("gramy= ")+String(gramy)).c_str(),743);
+          onScreens((String("gramy= ")+String(gramy)).c_str(),372);
       #endif
       //audio_setStation(0);
     request->send(200, "text/plain",  getRadioInfo());
