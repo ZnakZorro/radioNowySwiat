@@ -7,12 +7,10 @@
 
 #define DEBUG 1
 
-#define BLAT
-#ifdef BLAT
-  #define APPimage  "/blat.webp"
-  #define APPname   "/blat.web.json"
-  #define VOLUMEdef 70
-  #define cur_volume_DEF  5
+#define TEREN
+#ifdef TEREN
+  #define VOLUMEdef 95
+  #define cur_volume_DEF  10
 #endif
 
 
@@ -95,9 +93,14 @@ void radioinfo(){
 
 void setup(){
     Serial.begin(115200);
-    Serial.println("\r\nReset");
-    Serial.printf_P(PSTR("Free mem=%d\n"), ESP.getFreeHeap());
-
+    onScreens(String(cur_station).c_str(),0);
+    onScreens("Restart...",0);
+    onScreens(WIFIplace,0);
+    //Serial.println("\r\nReset");
+    //Serial.println(WIFIplace);
+    //Serial.printf_P(PSTR("Free mem=%d\n"), ESP.getFreeHeap());
+    //onScreens("Free mem="+((ESP.getFreeHeap())).c_str(),0);
+    onScreens(("Free mem="+String(ESP.getFreeHeap())).c_str(),0);
     SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI);
     SPI.setFrequency(1000000);
 
@@ -107,26 +110,23 @@ void setup(){
     WiFi.mode(WIFI_OFF);
     WiFi.begin(ssid, password);
 
-    Serial.println("WIFI...");
+    
+    onScreens("WIFI...",0);
     while(WiFi.status() != WL_CONNECTED) {
         Serial.print(".");
         delay(500);
     }
-
-    Serial.printf_P(PSTR("Connected\r\nRSSI: "));
-    Serial.print(WiFi.RSSI());
-    Serial.print(" IP: ");
+    onScreens(("Connected\r\nIP: "+String(WiFi.localIP())).c_str(),111);
     Serial.println(WiFi.localIP());
-    
-    Serial.printf("Connect to AC101 codec... ");
-    while (not es.begin(IIC_DATA, IIC_CLK))
-    {
-        Serial.printf("Failed!\n");
+    onScreens(("RSSI: "+String(WiFi.RSSI())).c_str(),111);
+  
+    onScreens("Connect to AC101 codec... ",111);
+    while (not es.begin(IIC_DATA, IIC_CLK)){
+        onScreens("Failed!!!\n ",111);
         delay(1000);
     }
-    Serial.printf("OK\n");
+    onScreens("OK",111);
     
-
     // Enable amplifier
     pinMode(GPIO_PA_EN, OUTPUT);
     digitalWrite(GPIO_PA_EN, HIGH);
@@ -136,7 +136,7 @@ void setup(){
 
     audio.setPinout(I2S_BCLK, I2S_LRCK, I2S_SDOUT);
 	  audio.i2s_mclk_pin_select(I2S_MCLK);
-    audio.setTone(6,-15,6,500,1500,4500,30);
+    audio.setTone(qqq[0].l, qqq[0].m, qqq[0].h);
     audio.setVolume(0); 
     playCurStation();
     installServer();
@@ -144,11 +144,10 @@ void setup(){
     es.volume(ES8388::ES_MAIN, volume);
     es.volume(ES8388::ES_OUT1, volume);
     es.volume(ES8388::ES_OUT2, volume);
+    audio.setVolume(cur_volume); // 0...21
     es.mute(ES8388::ES_OUT1, false);
     es.mute(ES8388::ES_OUT2, false);
-    es.mute(ES8388::ES_MAIN, false);
-    audio.setVolume(cur_volume); // 0...21
-    
+    es.mute(ES8388::ES_MAIN, false); 
 }
 
 /*
@@ -160,7 +159,9 @@ BUTTON    GPIO
 * BUT_MODE 3  n
 */
 
-#define ADCpin    3
+/*22=LED*/
+
+#define ADCpin    22
 
 void loop(){
     audio.loop();
@@ -194,9 +195,7 @@ void loop(){
                                     if (odczyt == "-") {cur_station--;playCurStation();}
                                     if (odczyt == "*") {audio.setVolume(++cur_volume);}
                                     if (odczyt == "/") {audio.setVolume(--cur_volume);}
-                                    /*
-                                    if (odczyt == "a") {audio.setTone( 6, -3, -9,  600, 2000, 5000, 25); }
-                                    */
+                                   
                                 }
                                 //----------------------------------------------------------------------------------------------------------------------
 }
@@ -205,7 +204,14 @@ void loop(){
 
 
 void audio_showstation(const char *info){
-    Serial.print("station     ");Serial.println(info);
+    onScreens("GPIO_PA_EN=HIGH",207);
+    digitalWrite(GPIO_PA_EN, HIGH);
+    es.mute(ES8388::ES_OUT1, !true);
+    es.mute(ES8388::ES_OUT2, !true);
+    es.mute(ES8388::ES_MAIN, !true);
+    
+    onScreens(("Station::     "+String(info)).c_str(),209);
+    //Serial.print("station     ");Serial.println(info);
     snprintf(extraInfo, 64, info);
 }
 void audio_lasthost(const char *info){  //stream URL played
@@ -280,8 +286,26 @@ void audio_ChangeVolume(String ParamValue){
 void playCurStation(){
     if (cur_station <  0)            cur_station = last_stations;
     if (cur_station > last_stations)  cur_station = 0;    
-    onScreens(String(cur_station).c_str(),126);
-    audio.connecttohost(stacje[cur_station].stream);
+    onScreens(String(cur_station).c_str(),282);
+    //audio.stopSong();
+    //audio.setVolume(0);
+    digitalWrite(GPIO_PA_EN, LOW);
+    es.mute(ES8388::ES_OUT1, true);
+    es.mute(ES8388::ES_OUT2, true);
+    es.mute(ES8388::ES_MAIN, true);
+    
+    onScreens("GPIO_PA_EN=LOW",289);
+    //es.mute(ES8388::ES_OUT1, true);
+    //es.mute(ES8388::ES_OUT2, true);
+    //es.mute(ES8388::ES_MAIN, true);     
+      audio.connecttohost(stacje[cur_station].stream);
+    //es.mute(ES8388::ES_OUT1, false);
+    //es.mute(ES8388::ES_OUT2, false);
+    //es.mute(ES8388::ES_MAIN, false);     
+    //audio.setVolume(cur_volume > 2);
+    //audio.setVolume(cur_volume > 1);
+    //digitalWrite(GPIO_PA_EN, HIGH);
+    //audio.setVolume(cur_volume);
 }
 void audio_ChangeStation(String ParamValue){
     if (ParamValue=="p") cur_station++;
@@ -295,11 +319,14 @@ void audio_SetStationNr(String ParamValue){
 
 void audio_SetEQNr(String ParamValue){
     int q = ParamValue.toInt();
-    onScreens(String(q).c_str(),305);
+    onScreens(String(q).c_str(),305);    
+    audio.setTone(qqq[q].l, qqq[q].m, qqq[q].h);
+    /*
     if (q==0) audio.setTone(6, -6,6,550,1550,4500,30);
     if (q==1) audio.setTone(6,-12,6,550,1550,4500,30);
     if (q==2) audio.setTone(3,-18,6,550,1550,4500,30);
     if (q==3) audio.setTone(0,  0,0,550,1550,4500,30);
+    */
 }
 
 void installServer(){
@@ -336,10 +363,11 @@ void installServer(){
   });
   server.on("/stations.txt", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(200, "text/plain",getStations());
-  });*/
+  });
   server.on("/box.js", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(SPIFFS, "/box.js", "application/js");
   });
+  */
   
   // AJAXY
   server.on("/radio", HTTP_GET, [](AsyncWebServerRequest *request){

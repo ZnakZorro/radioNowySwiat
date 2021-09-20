@@ -7,57 +7,11 @@ const char PAGE_HTML[] PROGMEM = R"=====(
 <link rel="manifest" href="teren.web.json"> 
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#0F2C4B">
+<meta name="theme-color" content="#4564a4">
 <link rel="shortcut icon" type="image/svg+xml" size="any" href="radio.svg"> 
 <link rel="icon" type="image/svg+xml" href="radio.svg">  
 <style>
-  /*#4B110F#8D9176#0F2C4B#E7E3C1#D67E2B*/
-*,html {font:normal 14pt verdana; color:#E7E3C1; }
-body {background-color: #0F2C4B; padding: 0.25em; color:white;}
-.col {max-width: 630px;margin: auto; text-align:center;}
-h3 {margin:0.3em 0;}
-#info,#czas {font-size:0.8rem;font-family: monospace;}
-#info {min-height: 5em;}
-.btn {
-  background-color: #28396f;
-  border-color: #000;
-  color: white;
-  padding: 0.65em 0.15em;
-  box-shadow: inset 0px 0px 1px 1px #16162f;
-  border-radius: 0.75em;
-  text-align: center;
-}
-.btn:active, .btn:visited, .active {
-  background-color: #2c395f!important;
-  border-color: #6079c7;
-  box-shadow: inset 0px 0px 1px 1px #4b4ba7;
-}
-.btns {
-  max-width: 1024px;
-  margin: 0.25em auto ;
-  display: grid;
-  grid-gap: 0.25em;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-}
-.btns-sm,.btn-sm {grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));}
-.btns-bg {grid-template-columns: repeat(auto-fit, minmax(74px, 1fr));margin-top:1em;}
-
-.btns.red button {background-color:#4B110F;}
-.btns-sm button {font-size:0.88rem;}
-.ex{background: #8D9176;}
-div#app span {
-  width: 3em;
-  height: 1.3em;
-  background: #E7E3C1;
-  color: navy;
-  text-align: center;
-  padding: 0.3em;
-  margin: auto;
-  border-radius: 0.5em;
-}
-span.sp5 {padding:1em; display: grid;grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));border: 1px solid black; box-shadow: inset 0px 0px 2px 2px black;}
-img, svg {display: grid;align-content: center;justify-content: space-around;max-width: 10em;margin: auto;}
-  
+*,html{font:normal 14pt verdana;color:#222}body{background-color:#fafafa;padding:.25em;color:#fff}.col{max-width:630px;margin:auto;text-align:center}h3{margin:.3em 0}button{border:none}#czas,#info{font-size:.8rem;font-family:monospace}#info{min-height:5em}.btn{background-color:#f5be47;padding:.65em .15em;border-radius:.75em;text-align:center}.active,.btn:active,.btn:visited{background-color:#4564a4!important}.btns{margin:.25em auto;display:grid;grid-gap:.25em;grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}.btn-sm,.btns-sm,.sp{grid-template-columns:repeat(auto-fit,minmax(60px,1fr))}.btns-bg{grid-template-columns:repeat(auto-fit,minmax(74px,1fr));margin-top:1em}.btns.red button{background-color:#df513b;color:#fff}.btns-sm button{font-size:.88rem}.sp button{background:#e7e3c1;color:#0f2c4b;font-size:.8rem}.ex{background:#19d191;color:#fff}div#app span{width:3em;height:1.3em;background:#e7e3c1;color:navy;text-align:center;padding:.3em;margin:auto;border-radius:.5em}img,svg{display:grid;align-content:center;justify-content:space-around;max-width:10em;margin:auto} 
   </style>
 <script>
 const _$=e=>document.querySelector(e);
@@ -76,7 +30,8 @@ fetch(url+p)
 .then(r => {return r.text()})
 .then(t => {
   console.log(t);
-  opisz(t);  
+  opisz(t); 
+  setTimeout(()=>{opisz(t)},3000);    
 }).catch(e => {console.log(e)})  
 }
 
@@ -133,17 +88,23 @@ const opisz=(o)=>{
     <button onClick='sn("radio?z=0")' class="btn ex">Reset</button>
   </div>
 </div>
-  
-<hr /> 
-<!--#4B110F#8D9176#0F2C4B#E7E3C1#D67E2B-->
-  <div class="col btns">
-    <button onClick='sn("radio?q=0")' class="btn sp5" style="background:#0F2C4B">eq(6,-6,6)</button>
-    <button onClick='sn("radio?q=1")' class="btn sp5" style="background:#4B110F">eq(6,-12,6)</button>
-    <button onClick='sn("radio?q=2")' class="btn sp5" style="background:#8D9176">eq(6,-18,6)</button>
-    <button onClick='sn("radio?q=3")' class="btn sp5" style="background:#E7E3C1;color:#0F2C4B">eg(0,0,0)</button>
-  </div>  
-  
-<img src="radio.svg" />  
+
+<hr />
+  <div class="col btns sp">
+    <button onClick='sn("radio?q=0")' class="btn" >eq(0)</button>
+    <button onClick='sn("radio?q=1")' class="btn" >eq(1)</button>
+    <button onClick='sn("radio?q=2")' class="btn" >eq(2)</button>
+    <button onClick='sn("radio?q=3")' class="btn" >eq(3)</button>
+    <button onClick='sn("radio?q=4")' class="btn" >eq(4)</button>
+    <button onClick='sn("radio?q=5")' class="btn" >eq(5)</button>
+    <button onClick='sn("radio?q=6")' class="btn" >eq(6)</button>
+    <button onClick='sn("radio?q=7")' class="btn" >eq(7)</button>
+    <button onClick='sn("radio?q=8")' class="btn" >eq(8)</button>
+    <button onClick='sn("radio?q=9")' class="btn" >eq(9)</button>
+  </div>
+
+
+<!--img src="radio.svg" /-->
 </body>
 </html>
 

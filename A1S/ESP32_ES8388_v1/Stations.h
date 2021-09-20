@@ -34,7 +34,7 @@ stationsSTRUCT stacje [last_stations+1]={
   {0, "WaWa",  "http://waw01-01.ic.smcdn.pl:8000/1260-1.aac.m3u"}
   */
 };
-/*
+
 struct sQQQ  {
   int8_t l;  
   int8_t m;
@@ -42,19 +42,21 @@ struct sQQQ  {
 };
 
 
-sQQQ qqq[8]={
-    { 6,-6, 6},
-    { 4,-6, 4},
-    { 3, 0, 3},
-    { 3,-3, 3},
-    { 0, 0, 0},
-    {-3, 0,-3},
-    {-3, 3,-3},
-    {-3, 6,-6}
+sQQQ qqq[10]={
+    { 6, -6, 6},
+    { 6, -9, 6},
+    { 6,-12, 6},
+    { 6,-18, 6},
+    { 6, -6, 2},
+    { 6, -9, 2},
+    { 6,-12, 2},
+    { 6,-12, 2},
+    { 6,-12, 2},
+    { 0,0, 0}
 };
 
 
-
+/*
 String strSplit(String data, char separator, int index)
 {
   int found = 0;
