@@ -103,8 +103,8 @@ const opisz=(o)=>{
     <button onClick='sn("radio?t=3")' id="st3">Sw-Jzz</button>
     <button onClick='sn("radio?t=4")' id="st4">Sw-Cla</button>
     <button onClick='sn("radio?t=5")' id="st5">Sw-Pop</button>
-    <button onClick='sn("radio?t=6")' id="st5">Cl-FM</button>
-    <button onClick='sn("radio?t=7")' id="st5">101-J</button>
+    <button onClick='sn("radio?t=6")' id="st6">Cl-FM</button>
+    <button onClick='sn("radio?t=7")' id="st7">101-J</button>
   </div>
   <div class="grid col col-md blue">
     <button onClick='sn("radio?n=0")' class="btn ex">Info</button>
