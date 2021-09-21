@@ -31,45 +31,50 @@ img,svg{display:grid;align-content:center;justify-content:space-around;max-width
 div#app span{width:3em;height:1.3em;background:#e7e3c1;padding:.3em;margin:auto;border-radius:.5em} 
 .eq button{background:#e7e3c1;color:#0f2c4b;font-size:.8rem}
 @media (orientation: landscape) {body {overflow:auto;}}
+/*.circle{position:absolute;z-index:-1;opacity:.15}.circle1{width:100vh;height:100vh;background:#6495ed;border-radius:50vh;left:75%;bottom:0}.circle2{width:100vh;height:100vh;background:#6495ed;border-radius:50vh;right:75%;bottom:0}.circle3{width:200vw;height:200vw;background:#adff2f;border-radius:100vw;left:-50vw;bottom:90%}.circle4{width:200vw;height:200vw;background:#adff2f;border-radius:100vw;right:-50vw;top:90%}   
+*/
 /*****/
-.circle{position:absolute;z-index:-1;opacity:.15}.circle1{width:100vh;height:100vh;background:#6495ed;border-radius:50vh;left:75%;bottom:0}.circle2{width:100vh;height:100vh;background:#6495ed;border-radius:50vh;right:75%;bottom:0}.circle3{width:200vw;height:200vw;background:#adff2f;border-radius:100vw;left:-50vw;bottom:90%}.circle4{width:200vw;height:200vw;background:#adff2f;border-radius:100vw;right:-50vw;top:90%}   
-  .circle{
-   /*position:absolute;*/
-   z-index:-1; 
-  opacity:0.15;
+.circle {
+    position: absolute;
+    z-index: -1;
+    opacity: 0.15;
 }
 .circle1 {
-    width: 100vh;
+    width: 12vh;
     height: 100vh;
     background: cornflowerblue;
-    border-radius: 50vh;
-    left: 75%;
+    border-radius: 50vh 0vh 0 50vh;
+    right: 0vh;
     bottom: 0;
-}
+}  
 .circle2 {
-    width: 100vh;
+    width: 12vh;
     height: 100vh;
     background: cornflowerblue;
-    border-radius: 50vh;
-    right: 75%;
+    border-radius: 0 50vh 50vh 0;
+    left: 0vw;
     bottom: 0;
-}
+}  
 .circle3 {
-    width: 200vw;
-    height: 200vw;
+    width: 100vw;
+    height: 20vw;
     background: greenyellow;
-    border-radius: 100vw;
-    left: -50vw;
-    bottom: 90%;
-}
+    border-radius: 0 0 100vw 100vw;
+    left: 0;
+    top: 0;
+}  
 .circle4 {
-    width: 200vw;
-    height: 200vw;
+    width: 100vw;
+    height: 20vw;
     background: greenyellow;
-    border-radius: 100vw;
-    right: -50vw;
-    top: 90%;
-}
+    border-radius: 100vw 100vw 0 0;
+    left: 0vw;
+    top: 84vh;
+}  
+  
+  
+  
+  
 /*****/  
 </style>
 <script>
@@ -139,8 +144,8 @@ const opisz=(o)=>{
     <button onClick='sn("radio?t=3")' id="st3">Sw-Jzz</button>
     <button onClick='sn("radio?t=4")' id="st4">Sw-Cla</button>
     <button onClick='sn("radio?t=5")' id="st5">Sw-Pop</button>
-    <button onClick='sn("radio?t=6")' id="st5">Cl-FM</button>
-    <button onClick='sn("radio?t=7")' id="st5">101-J</button>
+    <button onClick='sn("radio?t=6")' id="st6">Cl-FM</button>
+    <button onClick='sn("radio?t=7")' id="st7">101-J</button>
   </div>
   <div class="grid col col-md blue">
     <button onClick='sn("radio?n=0")' class="btn ex">Info</button>
@@ -184,7 +189,45 @@ const opisz=(o)=>{
 
 
 <style>
-
+/*
+.circle{
+   position:absolute;
+   z-index:-1; 
+  opacity:0.15;
+}
+.circle1 {
+    width: 100vh;
+    height: 100vh;
+    background: cornflowerblue;
+    border-radius: 50vh;
+    left: 75%;
+    bottom: 0;
+}
+.circle2 {
+    width: 100vh;
+    height: 100vh;
+    background: cornflowerblue;
+    border-radius: 50vh;
+    right: 75%;
+    bottom: 0;
+}
+.circle3 {
+    width: 200vw;
+    height: 200vw;
+    background: greenyellow;
+    border-radius: 100vw;
+    left: -50vw;
+    bottom: 90%;
+}
+.circle4 {
+    width: 200vw;
+    height: 200vw;
+    background: greenyellow;
+    border-radius: 100vw;
+    right: -50vw;
+    top: 90%;
+}  
+*/
   /*
 .circle1 {
     width: 100vmax;
