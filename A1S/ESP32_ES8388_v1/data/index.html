@@ -12,9 +12,9 @@
 <link rel="shortcut icon" type="image/svg+xml" size="any" href="radio.svg"> 
 <link rel="icon" type="image/svg+xml" href="radio.svg">  
 <style>
+body{background-color:#fafafa;color:#fff;padding:0;margin:0;overflow:hidden;background-image:url(radio.svg);background-blend-mode:color-dodge;background-repeat:no-repeat;background-position:center 45vh;background-size:50vh}
 *,html{font-size:14pt;font-family:Arial,Helvetica,sans-serif;color:#222;text-shadow: 2px 2px 2px #888;}
-body{background-color:#fafafa;color:#fff;padding:0;margin:0;overflow: hidden;}
-.wrap {z-index:2; margin:0.5rem;max-width:630px;}
+.wrap {z-index:2;margin:auto;padding:0.5rem;max-width:630px; }
 .col {width:100%;text-align:center;margin:.25em auto;}
 .grid{display:grid;grid-gap:.25em; margin-top:0.2em;}
 .col-sm{grid-template-columns:repeat(auto-fit,minmax(50px,1fr));}
@@ -34,7 +34,7 @@ div#app span{width:3em;height:1.3em;background:#e7e3c1;padding:.3em;margin:auto;
 /*.circle{position:absolute;z-index:-1;opacity:.15}.circle1{width:100vh;height:100vh;background:#6495ed;border-radius:50vh;left:75%;bottom:0}.circle2{width:100vh;height:100vh;background:#6495ed;border-radius:50vh;right:75%;bottom:0}.circle3{width:200vw;height:200vw;background:#adff2f;border-radius:100vw;left:-50vw;bottom:90%}.circle4{width:200vw;height:200vw;background:#adff2f;border-radius:100vw;right:-50vw;top:90%}   
 */
 /*****/
-.circle {
+/*.circle {
     position: absolute;
     z-index: -1;
     opacity: 0.15;
@@ -71,7 +71,7 @@ div#app span{width:3em;height:1.3em;background:#e7e3c1;padding:.3em;margin:auto;
     left: 0vw;
     top: 84vh;
 }  
-  
+ */ 
   
   
   
@@ -169,12 +169,12 @@ const opisz=(o)=>{
 
 </div>
   
-<div style="width:100vw;height:100vh;overflow:hidden;">  
+<!--div style="width:100vw;height:100vh;overflow:hidden;">  
 <div class="circle circle1"></div>
 <div class="circle circle2"></div>
 <div class="circle circle3"></div>
 <div class="circle circle4"></div>  
-</div>  
+</div-->  
 </body>
 </html>
 
@@ -266,4 +266,3 @@ const opisz=(o)=>{
   
   
 </style>
-
