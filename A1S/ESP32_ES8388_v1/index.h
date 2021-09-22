@@ -70,6 +70,11 @@ const opisz=(o)=>{
   if(a[6]) _$("#info").innerHTML += "<br />"+a[6];
   if(a[7]) _$("#info").innerHTML += " "+a[7];
 }
+const set=(t)=>{
+  t.parentNode.querySelectorAll("button").forEach((b)=>{b.classList.remove("active")})
+  t.classList.add("active");
+}
+
 </script>
 </head>
 <body>
@@ -112,16 +117,16 @@ const opisz=(o)=>{
 <hr /> 
 
   <div class="grid col col-sm eq">
-    <button onClick='sn("radio?q=0")' >Mowa</button>
-    <button onClick='sn("radio?q=1")' >Muza</button>
-    <button onClick='sn("radio?q=2")' >Jazz</button>
-    <button onClick='sn("radio?q=3")' >Flat</button>
+    <button onClick='sn("radio?q=0");set(this)' >Mowa</button>
+    <button onClick='sn("radio?q=1");set(this)' >Muza</button>
+    <button onClick='sn("radio?q=2");set(this)' >Jazz</button>
+    <button onClick='sn("radio?q=3");set(this)' >Flat</button>
   </div>  
   <div class="grid col col-sm eq">
-    <button onClick='sn("radio?i=0")' >Mute+</button>
-    <button onClick='sn("radio?i=1")' >Mute-</button>
-    <button onClick='sn("radio?i=2")' >Enable+</button>
-    <button onClick='sn("radio?i=3")' >Enable-</button>
+    <button onClick='sn("radio?i=0");set(this)' >Mute+</button>
+    <button onClick='sn("radio?i=1");set(this)' >Mute-</button>
+    <button onClick='sn("radio?i=2");set(this)' >Enable+</button>
+    <button onClick='sn("radio?i=3");set(this)' >Enable-</button>
   </div>  
 
 </div>
