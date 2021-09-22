@@ -49,6 +49,7 @@
 // Amplifier enable
 #define GPIO_PA_EN    19
 
+int cur_equalizer = 0;
 int cur_station = 1;
 int cur_volume = cur_volume_DEF;
 int volume = VOLUMEdef;                            // 0...100
@@ -96,14 +97,16 @@ void savePreferences(){
          preferences.begin("my-app", false);
          preferences.putUInt("cur_volume", cur_volume);
          preferences.putUInt("cur_station", cur_station);
+         preferences.putUInt("cur_equalizer", cur_equalizer);         
          preferences.end();
 }         
 
 void setup(){
     Serial.begin(115200);
           preferences.begin("my-app", false);
-          cur_station = preferences.getUInt("cur_station", 1);
-          cur_volume  = preferences.getUInt("cur_volume", 10);
+          cur_station   = preferences.getUInt("cur_station", 1);
+          cur_volume    = preferences.getUInt("cur_volume", 10);
+          cur_equalizer = preferences.getUInt("cur_equalizer", 0);
           preferences.end();
           Serial.println("S="+String(cur_station)+" V="+String(cur_volume));
     onScreens(String(cur_station).c_str(),0);
@@ -376,7 +379,7 @@ void installServer(){
            if (ParamName=="s") audio_ChangeStation(ParamValue);
            if (ParamName=="t") audio_SetStationNr(ParamValue);
            if (ParamName=="q") audio_SetEQNr(ParamValue); 
-           if (ParamName=="i") audio_SetStationNr(cur_station);
+           if (ParamName=="i") audio_SetStationNr(String(cur_station));
            if (ParamName=="j") audio_MUTE(ParamValue); 
            if (ParamName=="z") {es.mute(ES8388::ES_MAIN, false); ESP.restart();}
     }
