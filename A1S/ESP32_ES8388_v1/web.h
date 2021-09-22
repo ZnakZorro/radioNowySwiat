@@ -1,6 +1,6 @@
 
 const char RADIO_SVG[] PROGMEM = R"=====(
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="#4564a4" d="M73.8 141.9c-15.2 6-25.8 21.8-25.8 39.5v256c0 23.5 18.5 42.7 41.6 42.7h332.8c23.1 0 41.6-19.2 41.6-42.7v-256c0-23.7-18.5-42.7-41.6-42.7H179l171.8-71.3L336.7 32 73.8 141.9zM160 438c-35.4 0-64-28.6-64-64s28.6-64 64-64 64 28.6 64 64-28.6 64-64 64zm256-171.3h-32v-46.2h-44.8v46.2H96v-85.3h320v85.3z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="orange" d="M73.8 141.9c-15.2 6-25.8 21.8-25.8 39.5v256c0 23.5 18.5 42.7 41.6 42.7h332.8c23.1 0 41.6-19.2 41.6-42.7v-256c0-23.7-18.5-42.7-41.6-42.7H179l171.8-71.3L336.7 32 73.8 141.9zM160 438c-35.4 0-64-28.6-64-64s28.6-64 64-64 64 28.6 64 64-28.6 64-64 64zm256-171.3h-32v-46.2h-44.8v46.2H96v-85.3h320v85.3z"/></svg>
 )=====";
 
 const char TEREN_WEB_JSON[] PROGMEM = R"=====(
@@ -10,8 +10,8 @@ const char TEREN_WEB_JSON[] PROGMEM = R"=====(
     "description": "radioTeren",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#df513b",
-    "theme_color": "#df513b",
+    "background_color": "#369",
+    "theme_color": "#369",
     "icons": [ 
         {
             "src": "radio.svg",
@@ -28,21 +28,8 @@ const char TEREN_WEB_JSON[] PROGMEM = R"=====(
 
 /*
 
-Szkic używa 1 236 666 bajtów (94%) pamięci programu. Maksimum to 1310720 bajtów.
-Zmienne globalne używają 52 336 bajtów (15%) pamięci dynamicznej, pozostawiając 275344 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
-
-Szkic używa 1 236 642 bajtów (94%) pamięci programu. Maksimum to 1310720 bajtów.
-Zmienne globalne używają 52 336 bajtów (15%) pamięci dynamicznej, pozostawiając 275344 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
-
-Szkic używa 1 236 430 bajtów (94%) pamięci programu. Maksimum to 1310720 bajtów.
-Zmienne globalne używają 52 336 bajtów (15%) pamięci dynamicznej, pozostawiając 275344 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
-
-nowy css
-Szkic używa 1 243 490 bajtów (94%) pamięci programu. Maksimum to 1310720 bajtów.
-Zmienne globalne używają 52 348 bajtów (15%) pamięci dynamicznej, pozostawiając 275332 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
-
-Szkic używa 1 243 362 bajtów (94%) pamięci programu. Maksimum to 1310720 bajtów.
-Zmienne globalne używają 52 348 bajtów (15%) pamięci dynamicznej, pozostawiając 275332 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
+Szkic używa 1 237 858 bajtów (94%) pamięci programu. Maksimum to 1310720 bajtów.
+Zmienne globalne używają 52336 bajtów (15%) pamięci dynamicznej, pozostawiając 275344 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
 
 
 

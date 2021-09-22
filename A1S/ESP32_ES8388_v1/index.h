@@ -1,21 +1,19 @@
 const char PAGE_HTML[] PROGMEM = R"=====(
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
 <meta charset="utf-8">
 <title>@radio Teren</title>
 <link rel="manifest" href="teren.web.json"> 
-<!--meta name="viewport" content="width=device-width,initial-scale=1"-->
 <meta name="viewport" content="width=device-width, user-scalable=no" />
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#4564a4">
 <link rel="shortcut icon" type="image/svg+xml" size="any" href="radio.svg"> 
 <link rel="icon" type="image/svg+xml" href="radio.svg">  
 <style>
+body{background-color:#fafafa;color:#fff;padding:0;margin:0;overflow:hidden;background-image:url(radio.svg);background-blend-mode:color-dodge;background-repeat:no-repeat;background-position:center 45vh;background-size:50vh}
 *,html{font-size:14pt;font-family:Arial,Helvetica,sans-serif;color:#222;text-shadow: 2px 2px 2px #888;}
-body{background-color:#fafafa;color:#fff;padding:0;margin:0;overflow: hidden;}
-.wrap {z-index:2; margin:0.5rem;max-width:630px;}
+.wrap {z-index:2;margin:auto;padding:0.5rem;max-width:630px; }
 .col {width:100%;text-align:center;margin:.25em auto;}
 .grid{display:grid;grid-gap:.25em; margin-top:0.2em;}
 .col-sm{grid-template-columns:repeat(auto-fit,minmax(50px,1fr));}
@@ -32,9 +30,6 @@ img,svg{display:grid;align-content:center;justify-content:space-around;max-width
 div#app span{width:3em;height:1.3em;background:#e7e3c1;padding:.3em;margin:auto;border-radius:.5em} 
 .eq button{background:#e7e3c1;color:#0f2c4b;font-size:.8rem}
 @media (orientation: landscape) {body {overflow:auto;}}
-/*****/
-.circle{position:absolute;z-index:-1;opacity:.15}.circle1{width:100vh;height:100vh;background:#6495ed;border-radius:50vh;left:75%;bottom:0}.circle2{width:100vh;height:100vh;background:#6495ed;border-radius:50vh;right:75%;bottom:0}.circle3{width:200vw;height:200vw;background:#adff2f;border-radius:100vw;left:-50vw;bottom:90%}.circle4{width:200vw;height:200vw;background:#adff2f;border-radius:100vw;right:-50vw;top:90%}   
-/*****/  
 </style>
 <script>
 const _$=e=>document.querySelector(e);
@@ -109,32 +104,27 @@ const opisz=(o)=>{
   <div class="grid col col-md blue">
     <button onClick='sn("radio?n=0")' class="btn ex">Info</button>
     <button onClick='sn("radio?start=0")' class="btn ex">Mute</button>
-    <button onClick='window.location.reload(true);' class="btn ex">Reload</button>    
+    <button onClick='sn("radio?j=0")' class="btn ex">Replay</button>
     <button onClick='sn("radio?z=0")' class="btn ex">Reset</button>
+    <button onClick='window.location.reload(true);' class="btn ex">Reload</button>    
   </div>
   
 <hr /> 
 
   <div class="grid col col-sm eq">
-    <button onClick='sn("radio?q=0")' >eq(0)</button>
-    <button onClick='sn("radio?q=1")' >eq(1)</button>
-    <button onClick='sn("radio?q=2")' >eq(2)</button>
-    <button onClick='sn("radio?q=3")' >eq(3)</button>
-    <button onClick='sn("radio?q=4")' >eq(4)</button>
-    <button onClick='sn("radio?q=5")' >eq(5)</button>
-    <button onClick='sn("radio?q=6")' >eq(6)</button>
-    <button onClick='sn("radio?q=7")' >eq(7)</button>
+    <button onClick='sn("radio?q=0")' >Mowa</button>
+    <button onClick='sn("radio?q=1")' >Muza</button>
+    <button onClick='sn("radio?q=2")' >Jazz</button>
+    <button onClick='sn("radio?q=3")' >Flat</button>
+  </div>  
+  <div class="grid col col-sm eq">
+    <button onClick='sn("radio?i=0")' >Mute+</button>
+    <button onClick='sn("radio?i=1")' >Mute-</button>
+    <button onClick='sn("radio?i=2")' >Enable+</button>
+    <button onClick='sn("radio?i=3")' >Enable-</button>
   </div>  
 
 </div>
-  
-<div style="width:100vw;height:100vh;overflow:hidden;">  
-<div class="circle circle1"></div>
-<div class="circle circle2"></div>
-<div class="circle circle3"></div>
-<div class="circle circle4"></div>  
-</div>  
 </body>
 </html>
-
 )=====";

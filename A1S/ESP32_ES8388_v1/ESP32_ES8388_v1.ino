@@ -71,10 +71,16 @@ AsyncWebServer server(80);
 int ADC=0;
 int lastADC=0;
 
+
+#include <Preferences.h>
+Preferences preferences;
+
+
 //----------------------------------------------------------------------------------------------------------------------
 
 void onScreens(const char *infoString, int lineNR){
-  Serial.printf("---------------------------------------\n %u :: %s\n", lineNR,infoString);
+  return;
+  //Serial.printf("---------------------------------------\n %u :: %s\n", lineNR,infoString);
       //snprintf(extraInfo, 64, infoString);
       //updateInfo();
 }
@@ -86,8 +92,20 @@ void radioinfo(){
   String CoJestGrane = "/"+String(stacje[cur_station].info)+".mp3"; 
 }
 
+void savePreferences(){
+         preferences.begin("my-app", false);
+         preferences.putUInt("cur_volume", cur_volume);
+         preferences.putUInt("cur_station", cur_station);
+         preferences.end();
+}         
+
 void setup(){
     Serial.begin(115200);
+          preferences.begin("my-app", false);
+          cur_station = preferences.getUInt("cur_station", 1);
+          cur_volume  = preferences.getUInt("cur_volume", 10);
+          preferences.end();
+          Serial.println("S="+String(cur_station)+" V="+String(cur_volume));
     onScreens(String(cur_station).c_str(),0);
     onScreens("Restart...",0);
     onScreens(("Free mem="+String(ESP.getFreeHeap())).c_str(),0);
@@ -115,9 +133,9 @@ void setup(){
     // Enable amplifier
     pinMode(GPIO_PA_EN, OUTPUT);
     digitalWrite(GPIO_PA_EN, HIGH);
-    es.mute(ES8388::ES_OUT1, true);
-    es.mute(ES8388::ES_OUT2, true);
-    es.mute(ES8388::ES_MAIN, true);
+    //es.mute(ES8388::ES_OUT1, true);
+    //es.mute(ES8388::ES_OUT2, true);
+    //es.mute(ES8388::ES_MAIN, true);
 
     audio.setPinout(I2S_BCLK, I2S_LRCK, I2S_SDOUT);
 	  audio.i2s_mclk_pin_select(I2S_MCLK);
@@ -126,13 +144,13 @@ void setup(){
     playCurStation();
     installServer();
     
-    es.volume(ES8388::ES_MAIN, volume);
-    es.volume(ES8388::ES_OUT1, volume);
-    es.volume(ES8388::ES_OUT2, volume);
+    //es.volume(ES8388::ES_MAIN, volume);
+    //es.volume(ES8388::ES_OUT1, volume);
+    //es.volume(ES8388::ES_OUT2, volume);
     audio.setVolume(cur_volume); // 0...21
-    es.mute(ES8388::ES_OUT1, false);
-    es.mute(ES8388::ES_OUT2, false);
-    es.mute(ES8388::ES_MAIN, false); 
+    //es.mute(ES8388::ES_OUT1, false);
+    //es.mute(ES8388::ES_OUT2, false);
+    //es.mute(ES8388::ES_MAIN, false); 
 }
 
 /*
@@ -187,14 +205,9 @@ void loop(){
 
 // optional
 
-
 void audio_showstation(const char *info){
-    onScreens("GPIO_PA_EN=HIGH",192);
-    digitalWrite(GPIO_PA_EN, HIGH);
-    es.mute(ES8388::ES_OUT1, !true);
-    es.mute(ES8388::ES_OUT2, !true);
-    es.mute(ES8388::ES_MAIN, !true);
-    
+    Serial.print("station    ");Serial.println(info);
+    es.mute(ES8388::ES_MAIN, false);
     onScreens(("Station::     "+String(info)).c_str(),198);
     snprintf(extraInfo, 64, info);
 }
@@ -256,9 +269,10 @@ String getRadioInfo(){
 
 void setCurVolume(){
     if (cur_volume < 0)  cur_volume = 0;
-    if (cur_volume > 20) cur_volume = 21;
-    audio.setVolume(cur_volume); // 0...21
+    if (cur_volume > 19) cur_volume = 20;
+    audio.setVolume(cur_volume + stacje[cur_station].ampli); // 0...21
     onScreens(String(cur_volume).c_str(),261);
+    savePreferences();
 }
 
 void audio_ChangeVolume(String ParamValue){
@@ -268,18 +282,13 @@ void audio_ChangeVolume(String ParamValue){
 }
 
 void playCurStation(){
+    audio.stopSong();
+    es.mute(ES8388::ES_MAIN, true);
     if (cur_station <  0)            cur_station = last_stations;
     if (cur_station > last_stations)  cur_station = 0;    
     onScreens(String(cur_station).c_str(),273);
-    //audio.stopSong();
-    //audio.setVolume(0);
-    digitalWrite(GPIO_PA_EN, LOW);
-    es.mute(ES8388::ES_OUT1, true);
-    es.mute(ES8388::ES_OUT2, true);
-    es.mute(ES8388::ES_MAIN, true);
-    
-    onScreens("GPIO_PA_EN=LOW",281);
-      audio.connecttohost(stacje[cur_station].stream);
+    audio.connecttohost(stacje[cur_station].stream);
+    savePreferences();
 }
 void audio_ChangeStation(String ParamValue){
     if (ParamValue=="p") cur_station++;
@@ -296,6 +305,13 @@ void audio_SetEQNr(String ParamValue){
     onScreens(String(q).c_str(),296);    
     audio.setTone(qqq[q].l, qqq[q].m, qqq[q].h);
 
+}
+
+void audio_MUTE(String s){
+   if (s=="0") {es.mute(ES8388::ES_MAIN, true);}
+   if (s=="1") {es.mute(ES8388::ES_MAIN, false);}
+   if (s=="2") {digitalWrite(GPIO_PA_EN, HIGH);}
+   if (s=="3") {digitalWrite(GPIO_PA_EN, LOW);}
 }
 
 void installServer(){
@@ -360,7 +376,9 @@ void installServer(){
            if (ParamName=="s") audio_ChangeStation(ParamValue);
            if (ParamName=="t") audio_SetStationNr(ParamValue);
            if (ParamName=="q") audio_SetEQNr(ParamValue); 
-           if (ParamName=="z") ESP.restart();    
+           if (ParamName=="i") audio_SetStationNr(cur_station);
+           if (ParamName=="j") audio_MUTE(ParamValue); 
+           if (ParamName=="z") {es.mute(ES8388::ES_MAIN, false); ESP.restart();}
     }
  
     request->send(200, "text/plain",getRadioInfo());
