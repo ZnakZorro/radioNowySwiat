@@ -136,24 +136,14 @@ void setup(){
     // Enable amplifier
     pinMode(GPIO_PA_EN, OUTPUT);
     digitalWrite(GPIO_PA_EN, HIGH);
-    //es.mute(ES8388::ES_OUT1, true);
-    //es.mute(ES8388::ES_OUT2, true);
-    //es.mute(ES8388::ES_MAIN, true);
 
     audio.setPinout(I2S_BCLK, I2S_LRCK, I2S_SDOUT);
 	  audio.i2s_mclk_pin_select(I2S_MCLK);
-    audio.setTone(qqq[0].l, qqq[0].m, qqq[0].h);
+    audio.setTone(qqq[cur_equalizer].l, qqq[cur_equalizer].m, qqq[cur_equalizer].h);
     audio.setVolume(0); 
     playCurStation();
-    installServer();
-    
-    //es.volume(ES8388::ES_MAIN, volume);
-    //es.volume(ES8388::ES_OUT1, volume);
-    //es.volume(ES8388::ES_OUT2, volume);
+    installServer();    
     audio.setVolume(cur_volume); // 0...21
-    //es.mute(ES8388::ES_OUT1, false);
-    //es.mute(ES8388::ES_OUT2, false);
-    //es.mute(ES8388::ES_MAIN, false); 
 }
 
 /*
@@ -264,16 +254,19 @@ void audio_eof_speech(const char *info){
 String getRadioInfo(){
   const String      sep = "!"; 
   String v = String(cur_volume);
+  String q = String(cur_equalizer);
   String n = String(cur_station);
   String s = String(stacje[cur_station].info);
   String ri    = String(WiFi.RSSI());
-  return n+sep+v+sep+ri+sep+s+sep+String(extraInfo);
+  return n+sep+v+sep+ri+sep+s+sep+String(extraInfo)+sep+q;
 }
 
 void setCurVolume(){
     if (cur_volume < 0)  cur_volume = 0;
     if (cur_volume > 19) cur_volume = 20;
-    audio.setVolume(cur_volume + stacje[cur_station].ampli); // 0...21
+    int ampli = stacje[cur_station].ampli;
+    if (cur_volume<2) ampli = 0;
+    audio.setVolume(cur_volume + ampli); // 0...21
     onScreens(String(cur_volume).c_str(),261);
     savePreferences();
 }
@@ -287,8 +280,9 @@ void audio_ChangeVolume(String ParamValue){
 void playCurStation(){
     audio.stopSong();
     es.mute(ES8388::ES_MAIN, true);
+    delay(100);
     if (cur_station <  0)            cur_station = last_stations;
-    if (cur_station > last_stations)  cur_station = 0;    
+    if (cur_station > last_stations) cur_station = 0;    
     onScreens(String(cur_station).c_str(),273);
     audio.connecttohost(stacje[cur_station].stream);
     savePreferences();
@@ -304,19 +298,19 @@ void audio_SetStationNr(String ParamValue){
 }
 
 void audio_SetEQNr(String ParamValue){
-    int q = ParamValue.toInt();
-    onScreens(String(q).c_str(),296);    
-    audio.setTone(qqq[q].l, qqq[q].m, qqq[q].h);
+    cur_equalizer = ParamValue.toInt();
+    onScreens(String(cur_equalizer).c_str(),296);    
+    audio.setTone(qqq[cur_equalizer].l, qqq[cur_equalizer].m, qqq[cur_equalizer].h);
 
 }
-
-void audio_MUTE(String s){
+/*
+void audio_MUTEtest(String s){
    if (s=="0") {es.mute(ES8388::ES_MAIN, true);}
    if (s=="1") {es.mute(ES8388::ES_MAIN, false);}
    if (s=="2") {digitalWrite(GPIO_PA_EN, HIGH);}
    if (s=="3") {digitalWrite(GPIO_PA_EN, LOW);}
 }
-
+*/
 void installServer(){
   onScreens("installServer",202);
   
@@ -380,8 +374,8 @@ void installServer(){
            if (ParamName=="t") audio_SetStationNr(ParamValue);
            if (ParamName=="q") audio_SetEQNr(ParamValue); 
            if (ParamName=="i") audio_SetStationNr(String(cur_station));
-           if (ParamName=="j") audio_MUTE(ParamValue); 
-           if (ParamName=="z") {es.mute(ES8388::ES_MAIN, false); ESP.restart();}
+           //if (ParamName=="j") audio_MUTEtest(ParamValue); 
+           if (ParamName=="z") {audio.stopSong();es.mute(ES8388::ES_MAIN, false); delay(200); ESP.restart();}
     }
  
     request->send(200, "text/plain",getRadioInfo());

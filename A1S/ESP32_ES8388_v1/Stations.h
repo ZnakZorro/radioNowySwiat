@@ -1,4 +1,4 @@
-#define last_stations  7  //17
+#define last_stations  7+4  //17
 #define max_stations  last_stations+1
 
 struct stationsSTRUCT  {
@@ -11,21 +11,20 @@ stationsSTRUCT stacje [last_stations+1]={
   {0, "TOK-FM",    "http://pl-play.adtonos.com/tok-fm"},
   {0, "NowySwiat", "http://stream.rcs.revma.com/ypqt40u0x1zuv"},
   {0, "357",       "http://stream.rcs.revma.com/ye5kghkgcm0uv"},
-    {1, "Sws-Jzz",  "http://stream.srg-ssr.ch/m/rsj/aacp_96"},
-    {1, "Sws-Cla",  "http://stream.srg-ssr.ch/m/rsc_de/aacp_96"},
-    {0, "Sws-Pop",  "http://stream.srg-ssr.ch/m/rsp/aacp_96"},
-  
+  {1, "Sws-Jzz",  "http://stream.srg-ssr.ch/m/rsj/aacp_96"},
+  {1, "Sws-Cla",  "http://stream.srg-ssr.ch/m/rsc_de/aacp_96"},
+  {0, "Sws-Pop",  "http://stream.srg-ssr.ch/m/rsp/aacp_96"},
   {1, "ClassFM",   "http://media-the.musicradio.com/ClassicFM"},
-  {1, "101_Jazz",  "https://ais-sa2.cdnstream1.com/b22139_128mp3"} 
+  {1, "101_Jazz",  "https://ais-sa2.cdnstream1.com/b22139_128mp3"},
+  
+  {0, "RockServ",  "http://stream.open.fm/379"},
+  {0, "NewOnce",   "http://stream.open.fm/374"},
+  {0, "Niezapom",  "http://195.150.20.242:8000/rmf_niezapomniane_melodie"},
+  {0, "Szczecin",  "http://stream4.nadaje.com:11986/prs.aac"},
  /*  
   //{1, "SwissJaz",  "http://stream.srg-ssr.ch/m/rsj/mp3_128"},
   //{1, "SwissCls",  "http://stream.srg-ssr.ch/m/rsc_de/mp3_128"},
   //{0, "RMF_Class",  "http://www.rmfon.pl/n/rmfclassic.pls"},
-  {0, "Niezapom",  "http://195.150.20.242:8000/rmf_niezapomniane_melodie"},
-  {0, "RockServ",  "http://stream.open.fm/379"},
-  {0, "NewOnce",   "http://stream.open.fm/374"},
-                 
-  {0, "Szczecin",  "http://stream4.nadaje.com:11986/prs.aac.m3u"},
   {0, "RMF_FM",  "http://www.rmfon.pl/n/rmffm.pls"},
   {0, "Zetka",  "http://zet-net-01.cdn.eurozet.pl:8400/listen.pls"},
   {0, "AntyRadio",  "http://ant-waw-01.cdn.eurozet.pl:8602/listen.pls"},
@@ -44,9 +43,9 @@ struct sQQQ  {
 
 sQQQ qqq[10]={
     { 6, -6, 6},
+    { 6,-12, 6},
     { 6,-18, 6},
-    { 6,-24, 6},
-    { 0,0, 0}
+    { 2,-2, 2}
 };
 
 
