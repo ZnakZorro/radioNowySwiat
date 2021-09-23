@@ -22,17 +22,19 @@ body{background-color:#fafafa;color:#fff;padding:0;margin:0;overflow:hidden;back
 .col-md{grid-template-columns:repeat(auto-fit,minmax(80px,1fr));}
 .col-lg{grid-template-columns:repeat(auto-fit,minmax(90px,1fr));}
 .prima button {background-color:#f5be47;}  
-button{background:#df513b;color:white;border:none;box-shadow:1px 1px 1px 0px #666;border-radius:0.75em;padding: 0.5em 0.1em;margin: 0.2em 0;}
 h3{margin:.3em 0}
 h3,#info {text-shadow: none;}
 #czas,#info{font-size:.8rem;font-family:monospace}
 #info{min-height:5em}
+button{background:#df513b;color:white;border:none;box-shadow:1px 1px 1px 0px #666;border-radius:0.75em;padding: 0.5em 0.1em;margin: 0.2em 0;}
 .active,button:active,button:visited{background-color:#4564a4!important;color:white!important;}
-img,svg{display:grid;align-content:center;justify-content:space-around;max-width:10em;margin:auto}
-div#app span{width:3em;height:1.3em;background:#e7e3c1;padding:.3em;margin:auto;border-radius:.5em} 
 .small button{font-size:.85rem}
 .eq button{background:#e7e3c1;color:#0f2c4b}
+.prima button{color:black}
+img,svg{display:grid;align-content:center;justify-content:space-around;max-width:10em;margin:auto}
+div#app span{width:3em;height:1.3em;background:#e7e3c1;padding:.3em;margin:auto;border-radius:.5em} 
 @media (orientation: landscape) {body {overflow:auto;}}
+
 </style>
 <script>
 const _$=e=>document.querySelector(e);
