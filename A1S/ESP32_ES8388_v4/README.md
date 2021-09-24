@@ -1,3 +1,4 @@
 <h3>wifi mode</h3>
-*single
-*multi
+* single
+* multi
+* wifi menager???
