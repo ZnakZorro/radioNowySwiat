@@ -1,0 +1,3 @@
+wifi mode
+*single
+*multi
