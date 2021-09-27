@@ -205,7 +205,7 @@ unsigned long timeKEY = millis();
 void loop(){
     audio.loop();
 
-
+                // I2C loop ++++++++++++++++++++
                 counterReader++;
     
                 if (millis() - timeKEY > 333){
@@ -232,7 +232,7 @@ void loop(){
                           Serial.println(); 
                      }
                 }
-
+                // I2C loop ------------------------
 
 
 
@@ -241,12 +241,7 @@ void loop(){
 
 
     
-          /*ADC = analogRead(ADCpin);
-          if (ADC!=lastADC){
-              onScreens(String(ADC).c_str(),ADCpin);
-              lastADC = ADC;
-          }*/
-    
+     
                                 //----------------------------------------------------------------------------------------------------------------------
                                 if (Serial.available() > 0) {
                                     String odczyt = Serial.readString(); 
@@ -273,10 +268,16 @@ void loop(){
                                    
                                 }
                                 //----------------------------------------------------------------------------------------------------------------------
-}
+         /*ADC = analogRead(ADCpin);
+          if (ADC!=lastADC){
+              onScreens(String(ADC).c_str(),ADCpin);
+              lastADC = ADC;
+          }*/
+                                
+} // EOF Loop()
+
 
 // optional
-
 void audio_showstation(const char *info){
     Serial.print("station     ");Serial.println(info);
     es.mute(ES8388::ES_MAIN, false);
