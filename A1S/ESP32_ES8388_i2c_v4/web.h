@@ -27,11 +27,11 @@ const char TEREN_WEB_JSON[] PROGMEM = R"=====(
 
 
 /*
-Szkic używa 1 238 334 bajtów (94%) pamięci programu. Maksimum to 1310720 bajtów.
-Zmienne globalne używają 52 336 bajtów (15%) pamięci dynamicznej, pozostawiając 275344 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
 
-I2C
-Szkic używa 1 238 806 bajtów (94%) pamięci programu. Maksimum to 1310720 bajtów.
-Zmienne globalne używają 52 380 bajtów (15%) pamięci dynamicznej, pozostawiając 275300 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
+Szkic używa 1 200 758 bajtów (91%) pamięci programu. Maksimum to 1310720 bajtów.
+Zmienne globalne używają 52 072 bajtów (15%) pamięci dynamicznej, pozostawiając 275608 bajtów dla zmiennych lokalnych. Maksimum to 327680 bajtów.
+
+
+
 
 */

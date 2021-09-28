@@ -54,7 +54,7 @@ fetch(url+p)
 .then(t => {
   console.log(t);
   opisz(t); 
-  setTimeout(()=>{opisz(t)},3000);   
+  setTimeout(()=>{opisz(t)},1500);   
 }).catch(e => {console.log(e)})  
 }
 
@@ -127,8 +127,8 @@ const opisz=(o)=>{
   <div class="grid col small eq">
     <button onClick='sn("radio?q=0");' id="eq0">Mowa</button>
     <button onClick='sn("radio?q=1");' id="eq1">Muza</button>
-    <button onClick='sn("radio?q=2");' id="eq2">Jazz</button>
-    <button onClick='sn("radio?q=3");' id="eq3">TXT</button>
+    <button onClick='sn("radio?q=1");' id="eq2">Classic</button>
+    <button onClick='sn("radio?q=2");' id="eq3">Jazz</button>
     <button onClick='sn("radio?q=4");' id="eq4">Flat</button>
   </div>
 
