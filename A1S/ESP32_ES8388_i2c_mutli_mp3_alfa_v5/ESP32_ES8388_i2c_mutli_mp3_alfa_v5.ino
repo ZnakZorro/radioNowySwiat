@@ -130,10 +130,10 @@ void onScreens(const char *infoString, int lineNR){
 
 
 
-void piszLED4alfa(uint8_t a, uint8_t b,bool stacje=true){
+void piszLED4alfa(uint8_t a, uint8_t b, bool czystacje){
       //Serial.print(a);Serial.print(", "); Serial.print(b);Serial.print(" = ");  Serial.println(b/10);
       //alpha4.clear();
-  if (stacje){
+  if (czystacje){
     alpha4.writeDigitAscii(0, stacje[a].alfa[0]);
     alpha4.writeDigitAscii(1, stacje[a].alfa[1],true);
   } else {
@@ -252,7 +252,7 @@ bool flagaALFA = true;
 void przesunALFA(bool flagaALFA){    
     //Serial.println("przesunALFA");
     if (flagaALFA) {
-      piszLED4alfa(cur_station, cur_volume);
+      piszLED4alfa(cur_station, cur_volume,true);
     } else {
       alpha4.clear();
       unsigned long czas = millis()/1000;
@@ -278,10 +278,10 @@ void loop(){
                 if (millis() - timeALFA > 2000){
                     counterALFA++;
                     timeALFA = millis();
-                    if (counterALFA % 10==0){
+                    if (counterALFA % 11==0){
                           przesunALFA(!true);
                     }
-                    if (counterALFA % 10==1){
+                    if (counterALFA % 11==1){
                           przesunALFA(true);
                     }
                 }                
