@@ -134,7 +134,7 @@ void piszLED4alfa(uint8_t a, uint8_t b, bool czystacje){
       //Serial.print(a);Serial.print(", "); Serial.print(b);Serial.print(" = ");  Serial.println(b/10);
       //alpha4.clear();
   if (czystacje){
-    alpha4.writeDigitAscii(0, stacje[a].alfa[0]);
+    alpha4.writeDigitAscii(0, stacje[a].alfa[0],true);
     alpha4.writeDigitAscii(1, stacje[a].alfa[1],true);
   } else {
     alpha4.writeDigitAscii(0, char((a/10)+48));
