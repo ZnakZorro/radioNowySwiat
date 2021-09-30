@@ -292,9 +292,26 @@ void showRealTime(){
       }
       int godzina = timeinfo.tm_hour;
       int minuta  = timeinfo.tm_min;
-      Serial.print(godzina);   Serial.print(":");  Serial.println(minuta);
+      Serial.print("time="); Serial.print(godzina);   Serial.print(":");  Serial.println(minuta);
       piszLED4alfa(godzina,minuta,false);
        //epochTime = getTimeStamp();
+}
+
+void showAlarm(){
+      Serial.println("#285---showTime()---");
+       struct tm timeinfo;
+       if(!getLocalTime(&timeinfo)){
+          Serial.println("Failed to obtain time");
+          return;
+      }
+      int godzina = timeinfo.tm_hour;
+      int minuta  = timeinfo.tm_min;
+      Serial.print("alarm="); Serial.print(godzina);   Serial.print(":");  Serial.println(minuta);
+      if (godzina==12 && minuta>35) piszLED4alfa(0,0,false);
+       //epochTime = getTimeStamp();
+        if (godzina==12 &&  minuta>15){
+          if(minuta%5==0) audio.connecttoFS(SPIFFS, "/Dowidzenia.mp3");
+        }
 }
 
 void loop(){
@@ -310,8 +327,11 @@ void loop(){
                     /*if (counterALFA % 10==2){
                           piszAlfa4RadioCzas();
                     }*/
-                    if (counterALFA % 10==5){
+                    if (counterALFA % 10==2){
                           showRealTime();
+                    }
+                    if (counterALFA % 10==6){
+                          showAlarm();
                     }
                 }                
 
