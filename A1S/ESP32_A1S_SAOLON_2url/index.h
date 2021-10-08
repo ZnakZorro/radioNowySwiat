@@ -36,7 +36,9 @@ button{background:#df513b;color:white;border:none;box-shadow:1px 1px 1px 0px #66
 .prima button{color:black}
 img,svg{display:grid;align-content:center;justify-content:space-around;max-width:10em;margin:auto}
 div#app span{width:3em;height:1.3em;background:#e7e3c1;padding:.3em;margin:auto;border-radius:.5em;color: #222;} 
-input#slij {width:76%; color:black;text-shadow:none;font-size:0.8rem;}
+input#slij,input#nazwa{color:black;text-shadow:none;font-size:0.9rem;padding: 0.2em 0;}
+input#slij {width:96%;}
+input#nazwa {width:76%;}
 button#btn-slij {width:19%;background:#4169e1}
 .stu button {background:#4169e1;}
 @media (orientation: landscape) {body {overflow:auto;}}
@@ -44,12 +46,16 @@ button#btn-slij {width:19%;background:#4169e1}
 <script>
 const _$=e=>document.querySelector(e);
 const _$$=e=>document.querySelectorAll(e);
+let nr=0;
 let url = "/";
+const ref=(t=3)=>{setTimeout(()=>{sn()},t*1000);}
+
 document.addEventListener("DOMContentLoaded",()=>{
   let urlObj = new URL(window.location.href);
   url = urlObj.searchParams.get("url") || url;
   console.log(url);
-  sn();
+  localStorage.setItem("url", url);
+  ref(1);
   setInterval(()=>{sn()},15000);
   fetch(url+"stacje.json")
   .then(j => {return j.json()})
@@ -61,17 +67,20 @@ document.addEventListener("DOMContentLoaded",()=>{
 let stacje=(st)=>{
   let h="";
   st.forEach((s,i)=>{
-    if (s.n) {h+='<button id="sta'+i+'" data-s="'+s.s+'" data-a="'+s.a+'" onClick="sta(this)">'+s.n+'</button>';}
+    if (s.n) {h+='<button id="sta'+i+'" data-n="'+i+'" data-s="'+s.s+'" data-a="'+s.a+'" onClick="sta(this)">'+s.n+'</button>';}
   });
   _$("#stacje").innerHTML=h;
 }
 let sta=(ten)=>{
-  console.log(ten.dataset.a,ten.dataset.s);
-  sn("radio?x="+ten.dataset.s);
-  sn("radio?y="+ten.dataset.a);
-  sn("radio?z="+ten.dataset.n);
-
-  //sn("radio?a='+ten.dataset.a+'");
+  console.log(ten.dataset.n,ten.dataset.a,ten.dataset.s);
+  let lastStream = ten.dataset.s;
+  localStorage.setItem("lastStream", lastStream);
+  sn("radio?x="+lastStream);
+  nr = ten.dataset.n;
+  //sn("radio?y="+ten.dataset.a);
+  sn("radio?z="+nr);
+      ref();
+      ref(5);
 }
 
 let sn=(p="radio?n=0")=>{
@@ -110,7 +119,11 @@ let slij=()=>{
   let x=_$("#slij").value;
   if (x) {
     sn("radio?x="+x);
-    _$("#plus").innerHTML += '<button data-s="'+x+'" data-a="0" onclick="sta(this)">[+]</button>';
+    let nazwa = _$("#nazwa").value; 
+    _$("#plus").innerHTML += '<button data-n="'+nr+'" data-s="'+x+'" data-a="0" onclick="sta(this)">'+nazwa+'</button>';
+    nr++;
+    ref();
+    ref(5);
   }
 }
 </script>
@@ -151,11 +164,12 @@ let slij=()=>{
   </div>
 
   <div>
-    <input id="slij" /> <button onClick="slij()" id="btn-slij">Ślij</button>
+    <input id="slij" placeholder="Stream URL" onChange='_$("#nazwa").value=this.value;' /> 
+    <input id="nazwa" placeholder="Nazwa" /> <button onClick="slij()" id="btn-slij">Ślij</button><br />
   </div>
   
-  <div class="grid col col-md st stu" id="stacje"></div>
   <div class="" id="plus"></div>
+  <div class="grid col col-md st stu" id="stacje"></div>
   
   <div class="grid col prima small">
     <button onClick='sn("radio?n=0")' class="btn ex">Info</button>
@@ -185,9 +199,4 @@ let slij=()=>{
 </div>
 </body>
 </html>
-
-
-
-
-
 )=====";
