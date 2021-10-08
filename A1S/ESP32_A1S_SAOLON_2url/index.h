@@ -94,7 +94,6 @@ let opiszLocale=()=>{
 _$("#plus").innerHTML ="";
       let i=0;
       for(let k in locale[radio]){
-        console.log(k,locale[radio][k]);
         wpisz(i++,locale[radio][k],k);
       }
 }
@@ -111,7 +110,6 @@ let sn=(p="radio?n=0")=>{
 fetch(url+p)
 .then(r => {return r.text()})
 .then(t => {
-  //console.log(t);
   opisz(t); 
   setTimeout(()=>{opisz(t)},3000);   
 }).catch(e => {console.log(e)})  
@@ -131,8 +129,6 @@ const opisz=(o)=>{
   _$("#sta").textContent = lastSTA+1;
   _$("#vol").textContent = a[1];
   _$("#info").innerHTML  = "wifi:"+a[2]+"dB";
-  //console.log(a)
-  //console.log(a[4])
   if(a[3]) _$("#info").innerHTML += "<br />"+a[3];
   if(a[4]) _$("#info").innerHTML += "<br />"+a[4];
   if(a[5]) _$("#info").innerHTML += "<br />"+a[5];
@@ -140,9 +136,7 @@ const opisz=(o)=>{
   if(a[7]) _$("#info").innerHTML += " "+a[7];
 }
 
-
 let sta=(ten)=>{
-  console.log(ten.dataset.n,ten.dataset.a,ten.dataset.s);
   let lastStream = ten.dataset.s;
   _$("#slij").value=lastStream;
   _$("#nazwa").value=ten.textContent;
@@ -181,8 +175,7 @@ let del=(t)=>{
 }
 let ZapiszLocale=(root,key,val)=>{
     if(root) locale[root][key]=val;
-    localStorage.setItem(radio, JSON.stringify(locale));
-    
+    localStorage.setItem(radio, JSON.stringify(locale));  
 }
 </script>
 </head>
@@ -243,8 +236,7 @@ let ZapiszLocale=(root,key,val)=>{
       <button onClick='sn("radio?r=0")' class="btn ex">Replay</button>
       <button class="btn3" onclick='st("-2")'>Sleep</button>
     </div>
-  
-  
+
 <hr /> 
 
   <div class="grid col small eq">
@@ -258,4 +250,5 @@ let ZapiszLocale=(root,key,val)=>{
 </div>
 </body>
 </html>
+
 )=====";
