@@ -36,19 +36,41 @@ button{background:#df513b;color:white;border:none;box-shadow:1px 1px 1px 0px #66
 .prima button{color:black}
 img,svg{display:grid;align-content:center;justify-content:space-around;max-width:10em;margin:auto}
 div#app span{width:3em;height:1.3em;background:#e7e3c1;padding:.3em;margin:auto;border-radius:.5em;color: #222;} 
-input#slij,input#nazwa{color:black;text-shadow:none;font-size:0.9rem;padding: 0.2em 0;}
-input#slij {width:96%;}
+input#slij,input#nazwa{color:black;text-shadow:none;font-size:0.85rem;padding: 0.2em 0;}
+input#slij {width:97%;}
 input#nazwa {width:76%;}
 button#btn-slij {width:19%;background:#4169e1}
 .stu button {background:#4169e1;}
+
+div.gr {display:inline-block;margin-right:1em;}
+div.gr button {
+    font-size: 0.9rem;
+    padding: 0.33em;
+    background: #369;
+    max-width: 88%;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+
+div.gr button:first-child{background:darkcyan;}
+
 @media (orientation: landscape) {body {overflow:auto;}}
 </style>
 <script>
 const _$=e=>document.querySelector(e);
 const _$$=e=>document.querySelectorAll(e);
+const radio="radio";
 let nr=0;
 let url = "/";
+
+let lastSTA = 0;
+let locale = {};
+locale[radio] = {};
+
 const ref=(t=3)=>{setTimeout(()=>{sn()},t*1000);}
+const unID = () => [...new Array(8)].map(() => String.fromCharCode(97 + Math.random()*26)).join('')
 
 document.addEventListener("DOMContentLoaded",()=>{
   let urlObj = new URL(window.location.href);
@@ -62,7 +84,20 @@ document.addEventListener("DOMContentLoaded",()=>{
   .then(s => {
     stacje(s);
   }).catch(e => {console.log(e)})
+  if (localStorage.getItem(radio)){
+      locale[radio] = JSON.parse(localStorage.getItem(radio))[radio];
+      opiszLocale();
+  }
 });
+
+let opiszLocale=()=>{
+_$("#plus").innerHTML ="";
+      let i=0;
+      for(let k in locale[radio]){
+        console.log(k,locale[radio][k]);
+        wpisz(i++,locale[radio][k],k);
+      }
+}
 
 let stacje=(st)=>{
   let h="";
@@ -70,17 +105,6 @@ let stacje=(st)=>{
     if (s.n) {h+='<button id="sta'+i+'" data-n="'+i+'" data-s="'+s.s+'" data-a="'+s.a+'" onClick="sta(this)">'+s.n+'</button>';}
   });
   _$("#stacje").innerHTML=h;
-}
-let sta=(ten)=>{
-  console.log(ten.dataset.n,ten.dataset.a,ten.dataset.s);
-  let lastStream = ten.dataset.s;
-  localStorage.setItem("lastStream", lastStream);
-  sn("radio?x="+lastStream);
-  nr = ten.dataset.n;
-  //sn("radio?y="+ten.dataset.a);
-  sn("radio?z="+nr);
-      ref();
-      ref(5);
 }
 
 let sn=(p="radio?n=0")=>{
@@ -115,16 +139,50 @@ const opisz=(o)=>{
   if(a[6]) _$("#info").innerHTML += "<br />"+a[6];
   if(a[7]) _$("#info").innerHTML += " "+a[7];
 }
+
+
+let sta=(ten)=>{
+  console.log(ten.dataset.n,ten.dataset.a,ten.dataset.s);
+  let lastStream = ten.dataset.s;
+  _$("#slij").value=lastStream;
+  _$("#nazwa").value=ten.textContent;
+  localStorage.setItem("lastStream", lastStream);
+  sn("radio?x="+lastStream);
+  nr = ten.dataset.n;
+  //sn("radio?y="+ten.dataset.a);
+  sn("radio?z="+nr);
+  ref();
+  ref(5);
+}
+
+let wpisz=(nr,x,nazwa)=>{
+    _$("#plus").innerHTML += '<div class="gr"><button onClick="del(this)">&nbsp;&#x2715&nbsp;</button>&nbsp;<button data-n="'+nr+'" data-s="'+x+'" data-a="0" onclick="sta(this)">'+nazwa+'</button></div>';
+}
+
 let slij=()=>{
   let x=_$("#slij").value;
   if (x) {
     sn("radio?x="+x);
-    let nazwa = _$("#nazwa").value; 
-    _$("#plus").innerHTML += '<button data-n="'+nr+'" data-s="'+x+'" data-a="0" onclick="sta(this)">'+nazwa+'</button>';
+    //let xx = x.replace(/^http[s]?:\/\/(www\.)?(.*)?\/?(.)*/,"");
+    let xx = x.replace(/^http[s]?:\/\/(www\.)?/,"");
+    let nazwa = _$("#nazwa").value ? _$("#nazwa").value : xx;
+    ZapiszLocale(radio,nazwa,x);
+    wpisz(nr,x,nazwa);
     nr++;
     ref();
     ref(5);
   }
+}
+let del=(t)=>{
+  let d = t.nextElementSibling.textContent;
+  delete locale[radio][d]
+  opiszLocale();
+  localStorage.setItem(radio, JSON.stringify(locale));
+}
+let ZapiszLocale=(root,key,val)=>{
+    if(root) locale[root][key]=val;
+    localStorage.setItem(radio, JSON.stringify(locale));
+    
 }
 </script>
 </head>
@@ -164,11 +222,12 @@ let slij=()=>{
   </div>
 
   <div>
-    <input id="slij" placeholder="Stream URL" onChange='_$("#nazwa").value=this.value;' /> 
+    <input id="slij" placeholder="Stream URL"  />
     <input id="nazwa" placeholder="Nazwa" /> <button onClick="slij()" id="btn-slij">Ślij</button><br />
   </div>
-  
   <div class="" id="plus"></div>
+  <table id="local"></table>
+  
   <div class="grid col col-md st stu" id="stacje"></div>
   
   <div class="grid col prima small">
