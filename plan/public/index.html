@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="3600">
+<title>zutPlanCache</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#db5945">
+<style>
+  body {font:normal 1em verdana}
+</style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/pl.min.js"></script>
+  
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+    //document.getElementById("info").textContent = "info";
+let u ="/zutplan";
+let arrPlan={};
+  
+/*fetch(u)
+.then(r => {return r.json()})
+.then(o => {console.log(o)})
+.catch(e => {console.log(e)})
+*/
+
+  const log=(r)=>{
+    console.log(r);
+  }
+  
+  const getF = async (u) => {
+    const r = await fetch(u)
+    const o = await r.json()
+    return o
+  }
+  
+  getF(u).then((ret) => {
+    let data = ret.data;
+    log(data)
+      for(let re of data){
+        if (!re.start) continue;
+        let mo = moment(re.start)
+        let HH = mo.format('HH');
+        let mm = mo.format('mm');
+        let YYYY = mo.format('YYYY');
+        let M = mo.format('M');
+        let dow = mo.format('dddd');
+        let ddDD = mo.format('DD');
+        let HHmm = HH+':'+mm;
+        //console.log(YYYY+'-'+M+'-'+ddDD,dow,HHmm,re);
+        let arrRoom = re.room.split(" ");
+        if (arrRoom[1]) arrRoom[1] = arrRoom[1].replace("-","").trim();
+        
+        if (arrRoom[2]) {
+            re.room  = arrRoom[2];
+            re.build = arrRoom[0]+"-"+arrRoom[1];
+          console.log(re.room,arrRoom);
+        } else {
+            if (re.room.indexOf("zdalne")>-1) {
+              arrRoom = arrRoom[1].split("_");
+              console.log("zaj=",arrRoom);
+              re.room  = arrRoom[2];
+              re.build = arrRoom[0]+"-"+arrRoom[2];
+            }
+          console.log(re.room,arrRoom);
+        }
+        
+        if(re){
+            re.dow=dow;
+            let bu = re.build;
+            if (!arrPlan[bu]) arrPlan[bu]={}
+            if (!arrPlan[bu][YYYY]) arrPlan[bu][YYYY]={}
+            if (!arrPlan[bu][YYYY][M]) arrPlan[bu][YYYY][M]={}
+            if (!arrPlan[bu][YYYY][M][ddDD]) arrPlan[bu][YYYY][M][ddDD]={}
+            if (!arrPlan[bu][YYYY][M][ddDD][HHmm]) arrPlan[bu][YYYY][M][ddDD][HHmm]=[] 
+            arrPlan[bu][YYYY][M][ddDD][HHmm].push(re);
+        }
+      }
+      opisz(arrPlan);
+    }
+  )
+
+
+  
+  
+  
+});
+  
+const opisz=(ret)=>{
+  console.log(ret);
+  for (let bu in ret){
+    console.log(bu);
+    for (let year in ret[bu]){
+      for (let month in ret[bu][year]){
+        for (let day in ret[bu][year][month]){
+          for (let hour in ret[bu][year][month][day]){
+            for (let nr in ret[bu][year][month][day][hour]){
+              //console.log(year,month,day,hour,nr);
+              let lesson = ret[bu][year][month][day][hour][nr];
+              //console.log(lesson);
+              console.log(hour,lesson.dow,lesson.wydz_sk,lesson.build,lesson.room,lesson.title);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+/*
+borderColor: "#FF00FF"
+color: "#FF00FF"
+description: "Wprowadzenie do informatyki (wykład), zajęcia zdalne, dr hab.inż. Krzysztof Małecki, WI WI2-_Zaj_zdalne"
+dow: "poniedziałek"
+dzien_zajec: "MONDAY"
+end: "2021-10-11T20:00:00"
+group_name: "S1_I_W_12"
+hours: "2"
+imie: "Krzysztof"
+kierunek: "informatyka"
+lesson_form: "wykład"
+lesson_form_short: "W"
+lesson_status: "zajęcia zdalne"
+lesson_status_short: "Zz"
+login: "kmalecki"
+nazwisko: "Małecki"
+rodzaj: "studia stacjonarne"
+rodzaj_sk: "SS"
+room: "WI WI2-_Zaj_zdalne"
+semestr: "1"
+specjalnosc: null
+start: "2021-10-11T18:15:00"
+status_item: "normalne"
+subject: "Wprowadzenie do informatyki"
+title: "Wprowadzenie do informatyki (W)"
+tok_name: "I_1A_S_2021_2022_1"
+typ: "studia pierwszego stopnia"
+typ_sk: "SPS"
+tytul: "dr hab.inż."
+worker: "Małecki Krzysztof"
+worker_cover: null
+worker_title: "dr hab.inż. Krzysztof Małecki"
+wydz_sk: "WI"
+wydzial: "Wydział Informatyki"
+*/
+  
+</script>
+</head>
+<body>
+<h3>zutPlanCache</h3>
+<div class="col">
+  <h3>zutPlanCache</h3>
+  <div id="info"></div>
+</div>
+</body>
+</html>
+
+
+
