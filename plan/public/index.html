@@ -89,23 +89,30 @@ let arrPlan={};
   
 const opisz=(ret)=>{
   console.log(ret);
+  let plan = document.getElementById("plan");
+  let html ="";
   for (let bu in ret){
     console.log(bu);
+    html += '<h2>'+bu+'</h2>';
     for (let year in ret[bu]){
       for (let month in ret[bu][year]){
         for (let day in ret[bu][year][month]){
           for (let hour in ret[bu][year][month][day]){
+            let dow = ret[bu][year][month][day][hour][0].dow;
+            html += '<h3>'+year+'-'+month+'-'+day+' '+hour+', '+dow+'</h3>';
             for (let nr in ret[bu][year][month][day][hour]){
               //console.log(year,month,day,hour,nr);
               let lesson = ret[bu][year][month][day][hour][nr];
               //console.log(lesson);
-              console.log(hour,lesson.dow,lesson.wydz_sk,lesson.build,lesson.room,lesson.title);
+              console.log(lesson.dow,lesson.wydz_sk,lesson.build,lesson.room,lesson.title);
+              html += '<p>'+lesson.room+';  '+lesson.title+'; '+lesson.worker_title+'</p>';
             }
           }
         }
       }
     }
   }
+  document.getElementById("plan").innerHTML = html;
 }
 /*
 borderColor: "#FF00FF"
@@ -149,8 +156,8 @@ wydzial: "Wydział Informatyki"
 <body>
 <h3>zutPlanCache</h3>
 <div class="col">
-  <h3>zutPlanCache</h3>
   <div id="info"></div>
+  <div id="plan"></div>
 </div>
 </body>
 </html>
