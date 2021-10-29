@@ -19,7 +19,7 @@ Code->Download zip
 Instalujesz bibliotekę ww Arduino:<br />
 Szkic->Dołącz bibliotekę->Dodaj z zip-> wskazujesz zipa na dysku i OK<br />
 
-W zależności od wersji płytki dla versji v2.2 2957<br />Instalujesz bibliotekę dla dla ES8388<br />
+W zależności od wersji płytki dodatkowo dla versji v2.2 2957<br />Instalujesz bibliotekę dla dla ES8388<br />
 https://github.com/maditnerd/es8388
 
 <br />
