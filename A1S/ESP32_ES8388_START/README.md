@@ -25,6 +25,8 @@ https://github.com/maditnerd/es8388
 <br />
 Zworki na płytce ustawiasz jako 01100
 <br />
+W narzędzia->Płytka wybierasz ESP32 WROVER<br />
+W narzędzia->Port podajesz port<br />
 
 W zipie są przykłady
 * examples/ESP32-ES8388/ESP32_ES8388.ino
