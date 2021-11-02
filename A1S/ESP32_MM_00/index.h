@@ -13,11 +13,11 @@ const char PAGE_HTML[] PROGMEM = R"=====(
 <link rel="icon" type="image/svg+xml" href="radio.svg">  
 <style>
 body{background-color:#111;color:#fff;padding:0;margin:0;overflow:hidden;}
-*,html{font-size:14pt;font-family:Arial,Helvetica,sans-serif;color:#222;text-shadow: 2px 2px 2px #888;}
+*,html{font-size:13pt;font-family:Arial,Helvetica,sans-serif;color:#222;text-shadow: 2px 2px 2px #888;}
 .wrap {z-index:2;margin:auto;padding:0.5rem;max-width:600px; }
 .grid{display:grid;grid-gap:.25em; margin-top:0.2em;}
 .col {width:100%;text-align:center;margin:.25em auto;}
-.col{grid-template-columns:repeat(auto-fit,minmax(60px,1fr));}
+.col{grid-template-columns:repeat(auto-fit,minmax(56px,1fr));}
 .col-sm{grid-template-columns:repeat(auto-fit,minmax(40px,1fr));}
 .col-md{grid-template-columns:repeat(auto-fit,minmax(80px,1fr));}
 .col-lg{grid-template-columns:repeat(auto-fit,minmax(90px,1fr));}
