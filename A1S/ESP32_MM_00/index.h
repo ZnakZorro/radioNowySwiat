@@ -12,8 +12,8 @@ const char PAGE_HTML[] PROGMEM = R"=====(
 <link rel="shortcut icon" type="image/svg+xml" size="any" href="radio.svg"> 
 <link rel="icon" type="image/svg+xml" href="radio.svg">  
 <style>
-body{background-color:#111;color:#fff;padding:0;margin:0;overflow:hidden;}
-*,html{font-size:13pt;font-family:Arial,Helvetica,sans-serif;color:#222;text-shadow: 2px 2px 2px #888;}
+body{background-color:#111;color:#111;padding:0;margin:0;overflow:hidden;}
+*,html{font-size:13pt;font-family:Arial,Helvetica,sans-serif;color:#fff;text-shadow: 2px 2px 2px #888;}
 .wrap {z-index:2;margin:auto;padding:0.5rem;max-width:600px; }
 .grid{display:grid;grid-gap:.25em; margin-top:0.2em;}
 .col {width:100%;text-align:center;margin:.25em auto;}
