@@ -9,7 +9,7 @@ char const *ssid;
 char const *pass;
 };
 
-credentialSTRUCT credential [8]={
+credentialSTRUCT credential [1]={
 {"ssid","pass"}
 }
 </pre>
