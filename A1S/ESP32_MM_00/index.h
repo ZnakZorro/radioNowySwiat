@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 });
 
 let sn=(p="radio?n=0")=>{
+  if (p==="radio?start=0") _$("#mute").classList.toggle("active");
 fetch(url+p)
 .then(r => {return r.text()})
 .then(t => {
@@ -116,7 +117,7 @@ const opisz=(o)=>{
   </div>
   <div class="grid col prima small">
     <button onClick='sn("radio?n=0")' class="btn ex">Info</button>
-    <button onClick='sn("radio?start=0")' class="btn ex">Mute</button>
+    <button onClick='sn("radio?start=0")' id="mute" class="btn ex">Mute</button>
     <button onClick='sn("radio?j=0")' class="btn ex">Replay</button>
     <button onClick='sn("radio?z=0")' class="btn ex">Reset</button>
     <button onClick='window.location.reload(true);' class="btn ex">Reload</button>    
