@@ -29,26 +29,28 @@ void setup() {
   pinMode(button2.PIN, INPUT_PULLUP);
   pinMode(button3.PIN, INPUT_PULLUP);
   pinMode(button4.PIN, INPUT_PULLUP);
-  attachInterrupt(button1.PIN, isr1, FALLING);
-  attachInterrupt(button2.PIN, isr2, FALLING);
-  attachInterrupt(button3.PIN, isr3, FALLING);
-  attachInterrupt(button4.PIN, isr4, FALLING);
+  attachInterrupt(button1.PIN, isr1, RISING);
+  attachInterrupt(button2.PIN, isr2, RISING);
+  attachInterrupt(button3.PIN, isr3, RISING);
+  attachInterrupt(button4.PIN, isr4, RISING);
 }
 
 void loop_BUTTONS() {
-  byte bitState= 0b00000000;
-  if (button1.pressed) {
-      bitSet(bitState, 0);
-      Serial.printf("Button 1 has been pressed %u times\n", button1.numberKeyPresses);
-      button1.pressed = false;
-  }
+  byte bitState = 0;
+  if (button1.pressed) {bitSet(bitState, 0); button1.pressed = false;}
   if (button2.pressed) {bitSet(bitState, 1); button2.pressed = false;}
   if (button3.pressed) {bitSet(bitState, 2); button3.pressed = false;}
   if (button4.pressed) {bitSet(bitState, 3); button4.pressed = false;}
   
-  if (bitState != 0b00000000) {
+  if (bitState != 0) {
     Serial.println(bitState);
-    plusBUTTON = 300;
+    plusBUTTON = 500;
+    if (bitState == 1) {}
+    if (bitState == 2) {}
+    if (bitState == 4) {}
+    if (bitState == 8) {}
+    if (bitState == 10) {}
+
   }
 }
 
@@ -56,12 +58,10 @@ void loop() {
 
     //audio_loop();
   
-    if (millis() - millisBUTTON > 100 + plusBUTTON) {
+    if (millis() - millisBUTTON > 200 + plusBUTTON) {
       loop_BUTTONS();
       millisBUTTON = millis();
       plusBUTTON = 0;
     }
 
-  
-  
 }
