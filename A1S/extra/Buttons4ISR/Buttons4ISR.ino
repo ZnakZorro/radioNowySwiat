@@ -29,6 +29,7 @@ void setup() {
   pinMode(button2.PIN, INPUT_PULLUP);
   pinMode(button3.PIN, INPUT_PULLUP);
   pinMode(button4.PIN, INPUT_PULLUP);
+      //LOW, HIGH, CHANGE, FALLING, RISING
   attachInterrupt(button1.PIN, isr1, RISING);
   attachInterrupt(button2.PIN, isr2, RISING);
   attachInterrupt(button3.PIN, isr3, RISING);
