@@ -58,18 +58,10 @@ void loop() {
   
     if (millis() - millisBUTTON > 100 + plusBUTTON) {
       loop_BUTTONS();
-      timeBUTTON = millis();
+      millisBUTTON = millis();
       plusBUTTON = 0;
     }
 
   
-  //Detach Interrupt after 1 Minute
-  /*
-  static uint32_t lastMillis = 0;
-  if (millis() - lastMillis > 60000) {
-    lastMillis = millis();
-    detachInterrupt(button1.PIN);
-  Serial.println("Interrupt Detached!");
-  }
-  */
+  
 }
