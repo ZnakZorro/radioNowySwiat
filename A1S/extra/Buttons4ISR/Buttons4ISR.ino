@@ -25,6 +25,7 @@ void IRAM_ATTR isr4() {button4.numberKeyPresses += 1;button4.pressed = true;}
 
 void setup() {
   Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);  
   pinMode(button1.PIN, INPUT_PULLUP);
   pinMode(button2.PIN, INPUT_PULLUP);
   pinMode(button3.PIN, INPUT_PULLUP);
@@ -44,6 +45,7 @@ void loop_BUTTONS() {
   if (button4.pressed) {bitSet(bitState, 3); button4.pressed = false;}
   
   if (bitState != 0) {
+     digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
     Serial.println(bitState);
     plusBUTTON = 500;
     if (bitState == 1) {}
