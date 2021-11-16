@@ -9,14 +9,14 @@
 String openWeatherMapApiKey = "xxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
 struct credentialSTRUCT{
-char const *ssid;
-char const *pass;
+    char const *ssid;
+    char const *pass;
 };
 
 credentialSTRUCT credential [1]={
-  {"ssid","pass"},
-  {"xxxx","yyyy"},
-  {"aaaa","bbbb"}
+    {"ssid","pass"},
+    {"xxxx","yyyy"},
+    {"aaaa","bbbb"}
 }
 
 const char* ssid   = credential[0].ssid;
