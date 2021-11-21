@@ -168,24 +168,29 @@ void setup() {
     WiFi.mode(WIFI_STA);
     WiFiManager wm;
     bool res;
+    // wm.resetSettings();
     // res = wm.autoConnect(); // auto generated AP name from chipid
     // res = wm.autoConnect("AutoConnectAP"); // anonymous ap
-    res = wm.autoConnect("AutoZorroAP","zorro"); // password protected ap
+    res = wm.autoConnect("AutoZorroAP",passAP); // password protected ap min 8 chars
 
     if(!res) {
         Serial.println("Failed to connect");
+        lcd.clear();
+        lcd.setCursor(1, 0);    lcd.print("AutoZorroAP");
+        lcd.setCursor(1, 1);    lcd.print("192.168.4.1");
         // ESP.restart();
     } 
     else {
         lcd.print(" OK!");
         Serial.println("connected...yeey :)");
+        lcd.clear(); 
+        lcd.setCursor(0, 0);
+        lcd.print(WiFi.localIP());
+        lcd.setCursor(0, 1);
+        lcd.print(WiFi.RSSI());lcd.print("dB");         
     }
 /**************************/
-    lcd.clear(); 
-    lcd.setCursor(0, 0);
-    lcd.print(WiFi.localIP());
-    lcd.setCursor(0, 1);
-    lcd.print(WiFi.RSSI());lcd.print("dB"); 
+
                                        
     delay(3000);
     TimersSetup();
