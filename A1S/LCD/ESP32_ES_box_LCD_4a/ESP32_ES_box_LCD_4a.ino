@@ -37,6 +37,7 @@
 #define GPIO_PA_EN    19
 
 #define LED_BUILTIN   22
+unsigned long licznik = 0;
 
 int volume        = 64;  // 0...100
 int cur_volume    = 6+6;
@@ -54,7 +55,6 @@ void onScreens(const char *linia1, const char *linia2, int lineNR){
 }
 
 
-
 void setup()
 {
   Serial.begin(115200);
@@ -69,12 +69,15 @@ void setup()
     SPI.begin(SPI_SCK, SPI_MISO, SPI_MOSI);
     SPI.setFrequency(1000000);
     SD.begin(SD_CS);
-    WiFi.disconnect();
+    //WiFi.disconnect();
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
-
+    clio.clear();
     while(WiFi.status() != WL_CONNECTED) {
         Serial.print(".");
+        licznik++;
+        clio.clear();
+        clio.drukLCD("WiFi::"+String(licznik));
         delay(333);
     }
 
