@@ -25,6 +25,12 @@ void ESPio::initLCD(int IIC_DATA, int IIC_CLK)
       //delay(333);
 }
 
+void ESPio::clear()
+{
+     lcd.clear();
+     lcd.setCursor(0, 0); 
+}
+
 void ESPio::print(String linia)
 {
      lcd.clear();
