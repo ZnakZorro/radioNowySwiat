@@ -22,6 +22,7 @@ class ESPio
   public:
     void initLED(int pin);
     void initLCD(int IIC_DATA, int IIC_CLK);
+    void clear();
     void print(String linia);
     void drukLCD(String linia);
     void drukiLCD(char const *linia1,char const *linia2);
